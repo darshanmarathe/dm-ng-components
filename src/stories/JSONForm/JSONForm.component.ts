@@ -16,10 +16,11 @@ declare global {
   styleUrls: ['JSONForm.component.css']
 })
 
-export class JSONFormComponent implements AfterViewInit, OnInit {
+export class JSONForm implements AfterViewInit, OnInit {
 
   @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;
-  @Output() change = new EventEmitter<any>()
+  @Output()
+  change = new EventEmitter<Event>()
   jsonEditor: any = undefined;
 
   @Input()
@@ -71,9 +72,10 @@ export class JSONFormComponent implements AfterViewInit, OnInit {
     );
     this.jsonEditor.on("change", () => {
       if (this.validate()){
+      const value  = this.jsonEditor.getValue();
+      console.warn(value , "value")
 
-
-        this.change.emit(this.jsonEditor.getValue());
+        this.change.emit(value);
       }
 
     });

@@ -109,5 +109,7 @@ export class AppComponent {
   ShowItem(_item:any){
     console.warn('Hello.....' ,_item)
     this.item = _item;
+    console.log(this.item);
+
   }
 }

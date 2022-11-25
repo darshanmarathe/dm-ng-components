@@ -1,5 +1,3 @@
 <h2>Hello Trial </h2>
 {{item | json}}
-<dm-json-form title="Hello world" (change)="ShowItem" [schema]="defaultSchema" [data]="item">  </dm-json-form>
-
-
+<dm-json-form title="Hello world" (change)="ShowItem($event)" [schema]="defaultSchema" [data]="item">  </dm-json-form>
