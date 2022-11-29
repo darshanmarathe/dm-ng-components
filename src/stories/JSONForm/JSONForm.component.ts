@@ -36,7 +36,7 @@ export class JSONForm implements AfterViewInit, OnInit {
   @Input()
   title: string = 'JSON Form Component From Darshan'
 
-  private __defaultOptions = {
+  private editorOptions = {
     iconlib: "fontawesome5",
     object_layout: "normal",
     schema: this.schema || {},
@@ -67,13 +67,13 @@ export class JSONForm implements AfterViewInit, OnInit {
       this.jsonEditor.destroy();
     }
 
-    this.__defaultOptions.schema = this.schema;
+    this.editorOptions.schema = this.schema;
 
-    this.__defaultOptions.startval = this.data;
+    this.editorOptions.startval = this.data;
 
     this.jsonEditor = new window.JSONEditor(
       this.jsonform.nativeElement,
-      this.__defaultOptions
+      this.editorOptions
     );
     console.log("Inside SetupEditor", this.jsonEditor)
     this.jsonEditor.on("change", () => {
@@ -112,7 +112,7 @@ export class JSONForm implements AfterViewInit, OnInit {
       this.inter = setInterval(() => {
         console.warn(window.JSONEditor)
 
-        if (window.JSONEditor && typeof this.__defaultOptions !== 'string') {
+        if (window.JSONEditor && typeof this.editorOptions !== 'string') {
           clearInterval(this.inter);
           this.setUpEditor();
         }

@@ -15,12 +15,12 @@
         },
         {
             "name": "Window",
-            "id": "interface-Window-c4e7d88a1f2c5f2cd492e45badaf7f82bb48f5631d5a64bf4ce86ac2f012ab825dd8e8c001564c367e20d9eb4ff8184c45e306b27b60a354dca7c7cc6233a48d",
+            "id": "interface-Window-97b829dfeb3f9cf60510b5f65c450d374a46607850bf394b46937e3c916c6d82a9b190027db9b4d3b94fcece6bec5ccd63bc0d821fcba041a51b6c143790f181",
             "file": "src/stories/Autocomplete/Autocomplete.stories.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'AutoComplete.component.html',\r\n  styleUrls: ['AutoComplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'Autocomplete.component.html',\r\n  styleUrls: ['Autocomplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "JSONEditor",
@@ -38,12 +38,12 @@
         },
         {
             "name": "Window",
-            "id": "interface-Window-b6423b511f916af140f5f38f031125db1fa4388c7a9e0a812f8d582799a760fc02cdac03a166e8b630799716582cf33b6608750ce41c2d2c56f1701ae1de98f1-1",
+            "id": "interface-Window-dd1da4bd35804de6f1c7a91f5a8a7d75e0dc890cde07699ed7c7c5710622ff7c63be1f3a47f0ee57b96fa10b80cb51310775fcbfc66cc9840920263f7881ba1d-1",
             "file": "src/stories/JSONForm/JSONForm.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private __defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.__defaultOptions.schema = this.schema;\r\n\r\n    this.__defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.__defaultOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn(window.JSONEditor)\r\n\r\n        if (window.JSONEditor && typeof this.__defaultOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "JSONEditor",
@@ -380,7 +380,7 @@
         },
         {
             "name": "AutoComplete",
-            "id": "component-AutoComplete-c4e7d88a1f2c5f2cd492e45badaf7f82bb48f5631d5a64bf4ce86ac2f012ab825dd8e8c001564c367e20d9eb4ff8184c45e306b27b60a354dca7c7cc6233a48d",
+            "id": "component-AutoComplete-97b829dfeb3f9cf60510b5f65c450d374a46607850bf394b46937e3c916c6d82a9b190027db9b4d3b94fcece6bec5ccd63bc0d821fcba041a51b6c143790f181",
             "file": "src/stories/Autocomplete/Autocomplete.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -389,11 +389,11 @@
             "providers": [],
             "selector": "dm-autocomplete",
             "styleUrls": [
-                "AutoComplete.component.css"
+                "Autocomplete.component.css"
             ],
             "styles": [],
             "templateUrl": [
-                "AutoComplete.component.html"
+                "Autocomplete.component.html"
             ],
             "viewProviders": [],
             "inputsClass": [],
@@ -473,12 +473,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'AutoComplete.component.html',\r\n  styleUrls: ['AutoComplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'Autocomplete.component.html',\r\n  styleUrls: ['Autocomplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
                     "data": "",
-                    "styleUrl": "AutoComplete.component.css"
+                    "styleUrl": "Autocomplete.component.css"
                 }
             ],
             "stylesData": "",
@@ -527,7 +527,7 @@
                 "AfterViewInit",
                 "OnInit"
             ],
-            "templateData": ""
+            "templateData": "<div>\r\n\r\n</div>\r\n"
         },
         {
             "name": "ButtonComponent",
@@ -728,7 +728,7 @@
         },
         {
             "name": "JSONForm",
-            "id": "component-JSONForm-b6423b511f916af140f5f38f031125db1fa4388c7a9e0a812f8d582799a760fc02cdac03a166e8b630799716582cf33b6608750ce41c2d2c56f1701ae1de98f1",
+            "id": "component-JSONForm-dd1da4bd35804de6f1c7a91f5a8a7d75e0dc890cde07699ed7c7c5710622ff7c63be1f3a47f0ee57b96fa10b80cb51310775fcbfc66cc9840920263f7881ba1d",
             "file": "src/stories/JSONForm/JSONForm.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -794,14 +794,26 @@
             ],
             "propertiesClass": [
                 {
-                    "name": "defaultOptions",
-                    "defaultValue": "{\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }",
+                    "name": "__defaultOptions",
+                    "defaultValue": "{\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
                     "optional": false,
                     "description": "",
-                    "line": 39
+                    "line": 39,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "inter",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "NodeJS.Timer",
+                    "optional": false,
+                    "description": "",
+                    "line": 49
                 },
                 {
                     "name": "jsonEditor",
@@ -836,7 +848,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 104,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -846,7 +858,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 120,
+                    "line": 128,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -856,7 +868,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 127,
+                    "line": 135,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -866,7 +878,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 54,
+                    "line": 60,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -876,7 +888,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 59,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -886,7 +898,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -898,7 +910,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private __defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.__defaultOptions.schema = this.schema;\r\n\r\n    this.__defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.__defaultOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn(window.JSONEditor)\r\n\r\n        if (window.JSONEditor && typeof this.__defaultOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -926,7 +938,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 47,
+                "line": 49,
                 "jsdoctags": [
                     {
                         "name": "renderer",
@@ -1666,7 +1678,7 @@
                 "linktype": "component",
                 "name": "JSONForm",
                 "coveragePercent": 0,
-                "coverageCount": "0/16",
+                "coverageCount": "0/17",
                 "status": "low"
             },
             {
