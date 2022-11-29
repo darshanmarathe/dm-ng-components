@@ -15,12 +15,12 @@
         },
         {
             "name": "Window",
-            "id": "interface-Window-f77541e71c10e541e23aa03a3d014931e0b227bbe186efed75268778b6ca879ed503c9357dd8d7c8aca43de882b191d0298031a1397fa233d4ced164eb66a52e",
-            "file": "src/stories/JSONForm/JSONForm.component.ts",
+            "id": "interface-Window-c4e7d88a1f2c5f2cd492e45badaf7f82bb48f5631d5a64bf4ce86ac2f012ab825dd8e8c001564c367e20d9eb4ff8184c45e306b27b60a354dca7c7cc6233a48d",
+            "file": "src/stories/Autocomplete/Autocomplete.stories.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONFormComponent implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output() change = new EventEmitter<any>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'AutoComplete.component.html',\r\n  styleUrls: ['AutoComplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "JSONEditor",
@@ -35,6 +35,32 @@
             "indexSignatures": [],
             "kind": 165,
             "methods": []
+        },
+        {
+            "name": "Window",
+            "id": "interface-Window-b6423b511f916af140f5f38f031125db1fa4388c7a9e0a812f8d582799a760fc02cdac03a166e8b630799716582cf33b6608750ce41c2d2c56f1701ae1de98f1-1",
+            "file": "src/stories/JSONForm/JSONForm.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "JSONEditor",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "Window-1"
         }
     ],
     "injectables": [],
@@ -353,6 +379,157 @@
             "templateData": "<h2>Hello Trial </h2>\r\n{{item | json}}\r\n<dm-json-form title=\"Hello world\" (change)=\"ShowItem($event)\" [schema]=\"defaultSchema\" [data]=\"item\">  </dm-json-form>\r\n"
         },
         {
+            "name": "AutoComplete",
+            "id": "component-AutoComplete-c4e7d88a1f2c5f2cd492e45badaf7f82bb48f5631d5a64bf4ce86ac2f012ab825dd8e8c001564c367e20d9eb4ff8184c45e306b27b60a354dca7c7cc6233a48d",
+            "file": "src/stories/Autocomplete/Autocomplete.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "dm-autocomplete",
+            "styleUrls": [
+                "AutoComplete.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "AutoComplete.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "change",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 23,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "jsonEditor",
+                    "defaultValue": "undefined",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 24
+                },
+                {
+                    "name": "jsonform",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef<HTMLInputElement>",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'jsonform'"
+                        }
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "LoadExternerDeps",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 42,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'AutoComplete.component.html',\r\n  styleUrls: ['AutoComplete.component.css']\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n  }\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "AutoComplete.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "document",
+                        "type": "Document",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 24,
+                "jsdoctags": [
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "document",
+                        "type": "Document",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "AfterViewInit",
+                "OnInit"
+            ],
+            "templateData": ""
+        },
+        {
             "name": "ButtonComponent",
             "id": "component-ButtonComponent-8ceaf520f96e5437b08eeda244d84efb29effe62ddca4fc38eaa229085c2a1126c5715e61445bae741505aca1e4d377b350cb05fadd1dc45d9b2bbf7527029f1",
             "file": "src/stories/button.component.ts",
@@ -550,8 +727,8 @@
             "stylesData": ""
         },
         {
-            "name": "JSONFormComponent",
-            "id": "component-JSONFormComponent-f77541e71c10e541e23aa03a3d014931e0b227bbe186efed75268778b6ca879ed503c9357dd8d7c8aca43de882b191d0298031a1397fa233d4ced164eb66a52e",
+            "name": "JSONForm",
+            "id": "component-JSONForm-b6423b511f916af140f5f38f031125db1fa4388c7a9e0a812f8d582799a760fc02cdac03a166e8b630799716582cf33b6608750ce41c2d2c56f1701ae1de98f1",
             "file": "src/stories/JSONForm/JSONForm.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -573,7 +750,7 @@
                     "defaultValue": "{}",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 30,
                     "type": "any",
                     "decorators": []
                 },
@@ -582,7 +759,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 34,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -591,7 +768,7 @@
                     "defaultValue": "{}",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 27,
                     "type": "any",
                     "decorators": []
                 },
@@ -600,7 +777,7 @@
                     "defaultValue": "'JSON Form Component From Darshan'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 36,
+                    "line": 37,
                     "type": "string",
                     "decorators": []
                 }
@@ -608,10 +785,10 @@
             "outputsClass": [
                 {
                     "name": "change",
-                    "defaultValue": "new EventEmitter<any>()",
+                    "defaultValue": "new EventEmitter<Event>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 22,
+                    "line": 23,
                     "type": "EventEmitter"
                 }
             ],
@@ -624,7 +801,7 @@
                     "type": "object",
                     "optional": false,
                     "description": "",
-                    "line": 38
+                    "line": 39
                 },
                 {
                     "name": "jsonEditor",
@@ -634,7 +811,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 24
                 },
                 {
                     "name": "jsonform",
@@ -659,7 +836,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -669,7 +846,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 120,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -679,7 +856,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 126,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -689,7 +866,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 54,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -699,7 +876,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 59,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -709,7 +886,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 91,
+                    "line": 92,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -721,7 +898,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONFormComponent implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output() change = new EventEmitter<any>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  defaultOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema,\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  }\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n    if (this.defaultOptions.schema === undefined) return;\r\n\r\n    this.defaultOptions.schema = this.schema;\r\n\r\n    this.defaultOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.defaultOptions\r\n    );\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()){\r\n      const value  = this.jsonEditor.getValue();\r\n      console.warn(value , \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n      const that = this;\r\n      const inter = setInterval(() => {\r\n        if (window.JSONEditor) {\r\n          that.setUpEditor();\r\n          clearInterval(inter);\r\n        }\r\n      }, 1000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -749,7 +926,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 46,
+                "line": 47,
                 "jsdoctags": [
                     {
                         "name": "renderer",
@@ -775,7 +952,7 @@
                 "AfterViewInit",
                 "OnInit"
             ],
-            "templateData": "<link href=\"https://use.fontawesome.com/releases/v5.6.1/css/all.css\" rel=\"stylesheet\" />\r\n<link href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\" rel=\"stylesheet\" />\r\n\r\n<script src=\"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\"></script>\r\n<div id=\"jsonform\" #jsonform>\r\n\r\n</div>\r\n\r\n\r\n"
+            "templateData": "<link href=\"https://use.fontawesome.com/releases/v5.6.1/css/all.css\" rel=\"stylesheet\" />\r\n<link href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\" rel=\"stylesheet\" />\r\n\r\n<script src=\"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\"></script>\r\n\r\n{{title}}\r\n<div id=\"jsonform\" #jsonform>\r\n\r\n</div>\r\n\r\n\r\n"
         },
         {
             "name": "PageComponent",
@@ -861,13 +1038,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-a71cc40ee24df0707b52a175c0e0891be7d2f80dfc84f761e035bcb130402ac2e8fa6b91396331976e865223bb5db727754c2c4b0a089aa34aa772ff7ba7a96a",
+            "id": "module-AppModule-6d1c6cf917790166e3e44af94b3f9158913b094b6a1bf38d6897bd419cdd9bb9bf2f168185828a820fc90a56d9765816d63293e901c8f141be4639ffc8be9a43",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppComponent } from './app.component';\r\n\r\nimport {JSONFormComponent} from '../stories/JSONForm/JSONForm.component'\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    JSONFormComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule\r\n  ],\r\n  providers: [],\r\n  bootstrap: [AppComponent]\r\n})\r\nexport class AppModule { }\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppComponent } from './app.component';\r\n\r\nimport {JSONForm} from '../stories/JSONForm/JSONForm.component'\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    JSONForm\r\n  ],\r\n  imports: [\r\n    BrowserModule\r\n  ],\r\n  providers: [],\r\n  bootstrap: [AppComponent]\r\n})\r\nexport class AppModule { }\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -880,7 +1057,7 @@
                             "name": "AppComponent"
                         },
                         {
-                            "name": "JSONFormComponent"
+                            "name": "JSONForm"
                         }
                     ]
                 },
@@ -910,6 +1087,26 @@
     "miscellaneous": {
         "variables": [
             {
+                "name": "actionsData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  onChange: action('onChange'),\r\n\r\n}"
+            },
+            {
+                "name": "Basic",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -918,6 +1115,26 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+            },
+            {
+                "name": "defaultSchema",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  title: \"Person\",\r\n  type: \"object\",\r\n  required: [\r\n    \"name\",\r\n    \"age\",\r\n    \"date\",\r\n    \"favorite_color\",\r\n    \"gender\",\r\n    \"location\",\r\n    \"pets\",\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: \"string\",\r\n      description: \"First and Last name\",\r\n      minLength: 4,\r\n      default: \"Jeremy Dorn\",\r\n    },\r\n    age: {\r\n      type: \"integer\",\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: \"string\",\r\n      format: \"color\",\r\n      title: \"favorite color\",\r\n      default: \"#ffa500\",\r\n    },\r\n    gender: {\r\n      type: \"string\",\r\n      enum: [\"male\", \"female\", \"other\"],\r\n    },\r\n    date: {\r\n      type: \"string\",\r\n      format: \"date\",\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: \"object\",\r\n      title: \"Location\",\r\n      required: [\"city\", \"state\", \"citystate\"],\r\n      properties: {\r\n        city: {\r\n          type: \"string\",\r\n          default: \"San Francisco\",\r\n        },\r\n        state: {\r\n          type: \"string\",\r\n          default: \"CA\",\r\n        },\r\n        citystate: {\r\n          type: \"string\",\r\n          description:\r\n            \"This is generated automatically from the previous two fields\",\r\n          template: \"{{city}}, {{state}}\",\r\n          watch: {\r\n            city: \"location.city\",\r\n            state: \"location.state\",\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: \"array\",\r\n      format: \"table\",\r\n      title: \"Pets\",\r\n      uniqueItems: true,\r\n      items: {\r\n        type: \"object\",\r\n        title: \"Pet\",\r\n        properties: {\r\n          type: {\r\n            type: \"string\",\r\n            enum: [\"cat\", \"dog\", \"bird\", \"reptile\", \"other\"],\r\n            default: \"dog\",\r\n          },\r\n          name: {\r\n            type: \"string\",\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: \"dog\",\r\n          name: \"Walter\",\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
+            },
+            {
+                "name": "Disabled",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "environment",
@@ -938,6 +1155,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\r\n  production: false\r\n}"
+            },
+            {
+                "name": "Event",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Large",
@@ -1057,12 +1284,84 @@
                 "deprecationMessage": "",
                 "type": "Story<Page>",
                 "defaultValue": "(args: Page) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<JSONForm>",
+                "defaultValue": "(args: JSONForm) => ({\r\n  props: args,\r\n})"
             }
         ],
         "functions": [],
         "typealiases": [],
         "enumerations": [],
         "groupedVariables": {
+            "src/stories/JSONForm/JSONForm.stories.ts": [
+                {
+                    "name": "actionsData",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  onChange: action('onChange'),\r\n\r\n}"
+                },
+                {
+                    "name": "Basic",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultSchema",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  title: \"Person\",\r\n  type: \"object\",\r\n  required: [\r\n    \"name\",\r\n    \"age\",\r\n    \"date\",\r\n    \"favorite_color\",\r\n    \"gender\",\r\n    \"location\",\r\n    \"pets\",\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: \"string\",\r\n      description: \"First and Last name\",\r\n      minLength: 4,\r\n      default: \"Jeremy Dorn\",\r\n    },\r\n    age: {\r\n      type: \"integer\",\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: \"string\",\r\n      format: \"color\",\r\n      title: \"favorite color\",\r\n      default: \"#ffa500\",\r\n    },\r\n    gender: {\r\n      type: \"string\",\r\n      enum: [\"male\", \"female\", \"other\"],\r\n    },\r\n    date: {\r\n      type: \"string\",\r\n      format: \"date\",\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: \"object\",\r\n      title: \"Location\",\r\n      required: [\"city\", \"state\", \"citystate\"],\r\n      properties: {\r\n        city: {\r\n          type: \"string\",\r\n          default: \"San Francisco\",\r\n        },\r\n        state: {\r\n          type: \"string\",\r\n          default: \"CA\",\r\n        },\r\n        citystate: {\r\n          type: \"string\",\r\n          description:\r\n            \"This is generated automatically from the previous two fields\",\r\n          template: \"{{city}}, {{state}}\",\r\n          watch: {\r\n            city: \"location.city\",\r\n            state: \"location.state\",\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: \"array\",\r\n      format: \"table\",\r\n      title: \"Pets\",\r\n      uniqueItems: true,\r\n      items: {\r\n        type: \"object\",\r\n        title: \"Pet\",\r\n        properties: {\r\n          type: {\r\n            type: \"string\",\r\n            enum: [\"cat\", \"dog\", \"bird\", \"reptile\", \"other\"],\r\n            default: \"dog\",\r\n          },\r\n          name: {\r\n            type: \"string\",\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: \"dog\",\r\n          name: \"Walter\",\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
+                },
+                {
+                    "name": "Disabled",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Event",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<JSONForm>",
+                    "defaultValue": "(args: JSONForm) => ({\r\n  props: args,\r\n})"
+                }
+            ],
             "src/test.ts": [
                 {
                     "name": "context",
@@ -1231,7 +1530,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 5,
+        "count": 4,
         "status": "low",
         "files": [
             {
@@ -1261,6 +1560,24 @@
                 "name": "environment",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Autocomplete/Autocomplete.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AutoComplete",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Autocomplete/Autocomplete.stories.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Window",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
@@ -1347,7 +1664,7 @@
                 "filePath": "src/stories/JSONForm/JSONForm.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "JSONFormComponent",
+                "name": "JSONForm",
                 "coveragePercent": 0,
                 "coverageCount": "0/16",
                 "status": "low"
@@ -1359,6 +1676,66 @@
                 "name": "Window",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "actionsData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Basic",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultSchema",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Disabled",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Event",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

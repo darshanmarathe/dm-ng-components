@@ -36,19 +36,25 @@ export class JSONForm implements AfterViewInit, OnInit {
   @Input()
   title: string = 'JSON Form Component From Darshan'
 
-  defaultOptions = {
+  private __defaultOptions = {
     iconlib: "fontawesome5",
     object_layout: "normal",
-    schema: this.schema,
+    schema: this.schema || {},
     show_errors: "interaction",
     theme: "bootstrap4",
 
     startval: this.data || {},
-  }
+  };
+
+  inter: NodeJS.Timer;
 
 
   constructor(private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document) { }
+    @Inject(DOCUMENT) private document: Document) {
+    this.setUpEditor.bind(this);
+    this.initJsoneditor.bind(this);
+    this.validate.bind(this)
+  }
 
 
   ngOnInit(): void {
@@ -60,20 +66,20 @@ export class JSONForm implements AfterViewInit, OnInit {
     if (this.jsonEditor) {
       this.jsonEditor.destroy();
     }
-    if (this.defaultOptions.schema === undefined) return;
 
-    this.defaultOptions.schema = this.schema;
+    this.__defaultOptions.schema = this.schema;
 
-    this.defaultOptions.startval = this.data;
+    this.__defaultOptions.startval = this.data;
 
     this.jsonEditor = new window.JSONEditor(
       this.jsonform.nativeElement,
-      this.defaultOptions
+      this.__defaultOptions
     );
+    console.log("Inside SetupEditor", this.jsonEditor)
     this.jsonEditor.on("change", () => {
-      if (this.validate()){
-      const value  = this.jsonEditor.getValue();
-      console.warn(value , "value")
+      if (this.validate()) {
+        const value = this.jsonEditor.getValue();
+        console.warn(value, "value")
 
         this.change.emit(value);
       }
@@ -102,13 +108,15 @@ export class JSONForm implements AfterViewInit, OnInit {
     if (window.JSONEditor) {
       this.setUpEditor();
     } else {
-      const that = this;
-      const inter = setInterval(() => {
-        if (window.JSONEditor) {
-          that.setUpEditor();
-          clearInterval(inter);
+
+      this.inter = setInterval(() => {
+        console.warn(window.JSONEditor)
+
+        if (window.JSONEditor && typeof this.__defaultOptions !== 'string') {
+          clearInterval(this.inter);
+          this.setUpEditor();
         }
-      }, 1000);
+      }, 3000);
     }
     // new instance of JSONEditor
 
