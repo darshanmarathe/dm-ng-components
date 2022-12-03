@@ -270,7 +270,7 @@ export default {
   component: AutoComplete,
   // More on argTypes: https://storybook.js.org/docs/angular/api/argtypes
   argTypes: {
-    change: actionsData.onChange
+    change: actionsData.change
   },
 } as Meta;
 

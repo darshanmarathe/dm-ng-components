@@ -72,6 +72,8 @@ export class AutoComplete implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
+   
+      
       this.setAutoComplete()
     }, 200);
   }
@@ -130,7 +132,7 @@ export class AutoComplete implements AfterViewInit, OnInit {
 
     }
 
-    function addActive(x: any) {
+    function addActive(x: any): void | boolean {
       /*a function to classify an item as "active":*/
       if (!x) return false;
       /*start by removing the "active" class on all items:*/
@@ -159,22 +161,24 @@ export class AutoComplete implements AfterViewInit, OnInit {
       }
     }
 
+    const isNull = (obj:any):Boolean => obj == null || obj == 'null'
+
     /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", async function (e) {
+    inp.addEventListener("input", async (e:any): Promise<any> => {
       e.preventDefault();
-      var a, b, i, val: any = this.value;
+      var a, b, i, val: any = e.target.value;
 
       if (val !== 0)
         //that.fireEvent('input', 'value', val)
-that.input.emit(val)
-        /*close any already open lists of autocompleted values*/
-        if (that.url != null && that.mincharAjax <= val.length) {
-          if (that.isLoading === true) return;
-          const res = await fetch(that.url.replace('=q', `=${val}`))
-          const records = await res.json();
-          that.isLoading = false;
-          arr = records;
-        }
+        that.input.emit(val)
+      /*close any already open lists of autocompleted values*/
+      if ((that.url != null && that.url != 'null') && that.mincharAjax <= val.length) {
+        if (that.isLoading === true) return;
+        const res = await fetch(that.url.replace('=q', `=${val}`))
+        const records = await res.json();
+        that.isLoading = false;
+        arr = records;
+      }
       closeAllLists();
       if (!val) { return false; }
       currentFocus = -1;
@@ -183,8 +187,9 @@ that.input.emit(val)
       a.setAttribute("id", this.id + "autocomplete-list");
       a.setAttribute("class", "autocomplete-items");
       /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
+      e.target.parentNode.appendChild(a);
       if (arr.length === 0) arr = that.records;
+      debugger;
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         /*check if the item starts with the same letters as the text field value:*/
@@ -192,14 +197,14 @@ that.input.emit(val)
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
-          b.innerHTML = that.template != null ? Tmpl(arr[i], that.template) : "<strong>" + arr[i][that.textprop].substr(0, val.length) + "</strong>";
-          if (that.template == null) {
+          b.innerHTML = isNull(that.template) == false ? Tmpl(arr[i], that.template) : "<strong>" + arr[i][that.textprop].substr(0, val.length) + "</strong>";
+          if (isNull(that.template)) {
 
             b.innerHTML += arr[i][that.textprop].substr(val.length);
           }
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i][that.keyprop] + "'>";
-          b.innerHTML += "<input type='hidden' value='" + ((that.texttemplate != null) ? Tmpl(arr[i], that.texttemplate) : arr[i][that.textprop]) + "'>";
+          b.innerHTML += "<input type='hidden' value='" + ((isNull(that.texttemplate) == false) ? Tmpl(arr[i], that.texttemplate) : arr[i][that.textprop]) + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function (e) {
             /*insert the value for the autocomplete text field:*/
@@ -217,7 +222,8 @@ that.input.emit(val)
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function (e) {
-      var x: any = document.getElementById(this.id + "autocomplete-list");
+      debugger;
+      var x: any = document.getElementById(that.id + "autocomplete-list");
       if (x) x = x.getElementsByTagName("div");
       if (e.keyCode == 40) {
         /*If the arrow DOWN key is pressed,
@@ -250,10 +256,8 @@ that.input.emit(val)
   }
 
   LoadExternerDeps() {
-    const doc = new DocUtils(this.document);
-    doc.loadJsScript(this.renderer, "https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js");
-    doc.loadCss(this.renderer, "https://use.fontawesome.com/releases/v5.6.1/css/all.css");
-    doc.loadCss(this.renderer, "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css")
+  
+  
   }
 
   ngAfterViewInit() {
