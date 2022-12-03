@@ -2,7 +2,7 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { AutoComplete } from './Autocomplete.component';
 import { action } from '@storybook/addon-actions';
-import { EventEmitter } from '@angular/core';
+
 
 const actionsData = {
   change: action('change'),
