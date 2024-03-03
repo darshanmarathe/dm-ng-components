@@ -110,7 +110,7 @@ export class JSONForm implements AfterViewInit, OnInit {
     } else {
 
       this.inter = setInterval(() => {
-        console.warn(window.JSONEditor)
+        console.warn('Waiting for JSON Editor to be defined on the window object.');
 
         if (window.JSONEditor && typeof this.editorOptions !== 'string') {
           clearInterval(this.inter);
