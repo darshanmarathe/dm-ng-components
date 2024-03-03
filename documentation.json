@@ -11,16 +11,17 @@
             "sourceCode": "export interface User {}\r\n",
             "properties": [],
             "indexSignatures": [],
-            "methods": []
+            "methods": [],
+            "extends": []
         },
         {
             "name": "Window",
-            "id": "interface-Window-6435ce5f1394269f7a6b4e30a0b763f37dfc8eef06c630652c1bdb2ca73c1a1bb946e549696e598958686145194e5f71c30991a02662e2f953721b02308f84d9",
+            "id": "interface-Window-e92427e3ef0219ca3ca610709165487bf3d6456514b5b9794394c71019efab8801949271e293b3b37c8c2ed26c9b69709ca0c60f060765c36404d8d146ad178a",
             "file": "src/stories/JSONForm/JSONForm.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private editorOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.editorOptions.schema = this.schema;\r\n\r\n    this.editorOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.editorOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn(window.JSONEditor)\r\n\r\n        if (window.JSONEditor && typeof this.editorOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private editorOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.editorOptions.schema = this.schema;\r\n\r\n    this.editorOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.editorOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn('Waiting for JSON Editor to be defined on the window object.');\r\n\r\n        if (window.JSONEditor && typeof this.editorOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "JSONEditor",
@@ -33,8 +34,9 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
-            "methods": []
+            "kind": 171,
+            "methods": [],
+            "extends": []
         }
     ],
     "injectables": [],
@@ -102,17 +104,17 @@
                     "rawdescription": "\n\nAppend the JS tag to the Document Body.\n",
                     "description": "<p>Append the JS tag to the Document Body.</p>\n",
                     "modifierKind": [
-                        123
+                        125
                     ],
                     "jsdoctags": [
                         {
                             "name": {
                                 "pos": 597,
                                 "end": 605,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "renderer"
                             },
                             "type": "Renderer2",
@@ -121,10 +123,10 @@
                             "tagName": {
                                 "pos": 591,
                                 "end": 596,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "param"
                             },
                             "comment": "<p>The Angular Renderer</p>\n"
@@ -142,10 +144,10 @@
                             "tagName": {
                                 "pos": 668,
                                 "end": 675,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "returns"
                             },
                             "comment": "<p>the script element</p>\n"
@@ -177,17 +179,17 @@
                     "rawdescription": "\n\nAppend the JS tag to the Document Body.\n",
                     "description": "<p>Append the JS tag to the Document Body.</p>\n",
                     "modifierKind": [
-                        123
+                        125
                     ],
                     "jsdoctags": [
                         {
                             "name": {
                                 "pos": 176,
                                 "end": 184,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "renderer"
                             },
                             "type": "Renderer2",
@@ -196,10 +198,10 @@
                             "tagName": {
                                 "pos": 170,
                                 "end": 175,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "param"
                             },
                             "comment": "<p>The Angular Renderer</p>\n"
@@ -208,10 +210,10 @@
                             "name": {
                                 "pos": 216,
                                 "end": 219,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "src"
                             },
                             "type": "string",
@@ -220,10 +222,10 @@
                             "tagName": {
                                 "pos": 210,
                                 "end": 215,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "param"
                             },
                             "comment": "<p>The path to the script</p>\n"
@@ -232,10 +234,10 @@
                             "tagName": {
                                 "pos": 247,
                                 "end": 254,
-                                "flags": 4227072,
+                                "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 79,
+                                "kind": 80,
                                 "escapedText": "returns"
                             },
                             "comment": "<p>the script element</p>\n"
@@ -244,6 +246,7 @@
                 }
             ],
             "indexSignatures": [],
+            "extends": [],
             "inputsClass": [],
             "outputsClass": [],
             "hostBindings": [],
@@ -270,6 +273,7 @@
                 "./app.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [
@@ -338,6 +342,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -350,11 +356,12 @@
                 }
             ],
             "stylesData": "",
-            "templateData": "<h2>Hello Trial </h2>\r\n{{item | json}}\r\n<dm-json-form title=\"Hello world\" (change)=\"ShowItem($event)\" [schema]=\"defaultSchema\" [data]=\"item\">  </dm-json-form>\r\n"
+            "extends": [],
+            "templateData": "<h2>Hello Trial</h2>\r\n<div class=\"content\"><span>dm-ng-components app is running!</span></div>\r\n{{item | json}}\r\n<dm-json-form title=\"Hello world\" (change)=\"ShowItem($event)\" [schema]=\"defaultSchema\" [data]=\"item\">  </dm-json-form>\r\n"
         },
         {
             "name": "AutoComplete",
-            "id": "component-AutoComplete-d47fbf707d985bb34256b48a7a198f1e2ad960842c6bef7b78561e563d65c621dcb0a233e72916e5da13926405e2a86ca535e818201220abb126215f6f74ba73",
+            "id": "component-AutoComplete-d6b0af2303a182ed85f7479dae1f7b27ed11216a06b645568025ed760b234f418bd5cf9207f194b094876cbcbdb4a0316a7476992e511eb24e40983c8c21bdf4",
             "file": "src/stories/Autocomplete/Autocomplete.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -372,6 +379,7 @@
                 "Autocomplete.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "id",
@@ -501,7 +509,7 @@
                     "description": "",
                     "line": 56,
                     "modifierKind": [
-                        121
+                        123
                     ]
                 },
                 {
@@ -517,6 +525,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'myInput'"
                         }
+                    ],
+                    "modifierKind": [
+                        170
                     ]
                 }
             ],
@@ -540,7 +551,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 90,
+                    "line": 92,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -570,7 +581,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 252,
+                    "line": 258,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -580,7 +591,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 257,
+                    "line": 263,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -608,7 +619,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 81,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -629,10 +640,12 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\nimport { ViewEncapsulation } from '@angular/core';\r\n\r\n\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'Autocomplete.component.html',\r\n  styleUrls: ['Autocomplete.component.css'],\r\n  encapsulation: ViewEncapsulation.None\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('myInput') inp: ElementRef<HTMLInputElement>;\r\n\r\n  @Output()\r\n  change = new EventEmitter<any>()\r\n  @Output()\r\n  input = new EventEmitter<string>()\r\n\r\n  //#region Input Props\r\n\r\n  @Input()\r\n  public records: any[] = []\r\n  @Input()\r\n  public placeholder: string = ''\r\n  @Input()\r\n  public keyprop: string = 'key'\r\n  @Input()\r\n  public textprop: string = 'name'\r\n  @Input()\r\n  public keepopen: boolean = false\r\n  @Input()\r\n  public texttemplate: string = null\r\n  @Input()\r\n  public template: string = null\r\n  @Input()\r\n  public mincharAjax: number = 3\r\n  @Input()\r\n  public url: string = null\r\n  @Input()\r\n  public inputClass: string = 'dm-textbox'\r\n\r\n  @Input()\r\n  public id: string = 'dm-autocomplete'\r\n\r\n  //#endregion\r\n\r\n\r\n  //#region Properties\r\n\r\n  private _isLoading: boolean;\r\n  public get isLoading(): boolean {\r\n    return this._isLoading;\r\n  }\r\n  public set isLoading(v: boolean) {\r\n    this._isLoading = v;\r\n  }\r\n\r\n\r\n  //#endregion\r\n\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n    setTimeout(() => {\r\n      this.setAutoComplete()\r\n    }, 200);\r\n  }\r\n\r\n  setAutoComplete(records: any[] = undefined) {\r\n\r\n    if (records) {\r\n      this.autocomplete(this.inp.nativeElement, records)\r\n\r\n    } else {\r\n      this.autocomplete(this.inp.nativeElement, this.records)\r\n\r\n    }\r\n  }\r\n\r\n  autocomplete(inp: HTMLInputElement, rec: any[]) {\r\n\r\n    let arr = rec != null ? rec : this.records;\r\n    const that = this;\r\n    /*the autocomplete function takes two arguments,\r\n    the text field element and an array of possible autocompleted values:*/\r\n    let currentFocus: number;\r\n    const Tmpl = (rec: any, _tempStr: string) => {\r\n\r\n\r\n      let _template = _tempStr;\r\n\r\n      //Get Child\r\n      const gc = (key: string, item: any) => {\r\n\r\n        let retItem = item;\r\n        const keys = key.split('.');\r\n        for (const _key of keys) {\r\n          const split = _key.split('.');\r\n          const newKey = split.length > 1 ? split[1] : split[0];\r\n          retItem = retItem[newKey]\r\n        }\r\n\r\n\r\n        return retItem;\r\n      }\r\n      const re = /{(.*?)}/g;\r\n\r\n      const tkeys = _template.match(re)\r\n\r\n      tkeys.forEach((k) => {\r\n        k = k.replace('{', '').replace('}', '')\r\n        if (k.indexOf('.') === -1)\r\n          _template = _template.replace(`{${k}}`, rec[k]);\r\n        else\r\n          _template = _template.replace(`{${k}}`, gc(k, rec))\r\n\r\n      })\r\n\r\n      return _template;\r\n\r\n    }\r\n\r\n    function addActive(x: any): void | boolean {\r\n      /*a function to classify an item as \"active\":*/\r\n      if (!x) return false;\r\n      /*start by removing the \"active\" class on all items:*/\r\n      removeActive(x);\r\n      if (currentFocus >= x.length) currentFocus = 0;\r\n      if (currentFocus < 0) currentFocus = (x.length - 1);\r\n      /*add class \"autocomplete-active\":*/\r\n      x[currentFocus].classList.add(\"autocomplete-active\");\r\n    }\r\n\r\n    function removeActive(x: any[]) {\r\n      /*a function to remove the \"active\" class from all autocomplete items:*/\r\n      for (var i = 0; i < x.length; i++) {\r\n        x[i].classList.remove(\"autocomplete-active\");\r\n      }\r\n    }\r\n\r\n    function closeAllLists(elmnt: HTMLElement | EventTarget = undefined) {\r\n      /*close all autocomplete lists in the document,\r\n      except the one passed as an argument:*/\r\n      var x = document.querySelectorAll(\".autocomplete-items\");\r\n      for (var i = 0; i < x.length; i++) {\r\n        if (elmnt != x[i] && elmnt != inp) {\r\n          x[i].parentNode.removeChild(x[i]);\r\n        }\r\n      }\r\n    }\r\n\r\n    /*execute a function when someone writes in the text field:*/\r\n    inp.addEventListener(\"input\", async (e): any => {\r\n      e.preventDefault();\r\n      var a, b, i, val: any = this.value;\r\n\r\n      if (val !== 0)\r\n        //that.fireEvent('input', 'value', val)\r\n        that.input.emit(val)\r\n      /*close any already open lists of autocompleted values*/\r\n      if (that.url != null && that.mincharAjax <= val.length) {\r\n        if (that.isLoading === true) return;\r\n        const res = await fetch(that.url.replace('=q', `=${val}`))\r\n        const records = await res.json();\r\n        that.isLoading = false;\r\n        arr = records;\r\n      }\r\n      closeAllLists();\r\n      if (!val) { return false; }\r\n      currentFocus = -1;\r\n      /*create a DIV element that will contain the items (values):*/\r\n      a = document.createElement(\"DIV\");\r\n      a.setAttribute(\"id\", this.id + \"autocomplete-list\");\r\n      a.setAttribute(\"class\", \"autocomplete-items\");\r\n      /*append the DIV element as a child of the autocomplete container:*/\r\n      this.parentNode.appendChild(a);\r\n      if (arr.length === 0) arr = that.records;\r\n      /*for each item in the array...*/\r\n      for (i = 0; i < arr.length; i++) {\r\n        /*check if the item starts with the same letters as the text field value:*/\r\n        if (arr[i][that.textprop].substr(0, val.length).toUpperCase() == val.toUpperCase()) {\r\n          /*create a DIV element for each matching element:*/\r\n          b = document.createElement(\"DIV\");\r\n          /*make the matching letters bold:*/\r\n          b.innerHTML = that.template != null ? Tmpl(arr[i], that.template) : \"<strong>\" + arr[i][that.textprop].substr(0, val.length) + \"</strong>\";\r\n          if (that.template == null) {\r\n\r\n            b.innerHTML += arr[i][that.textprop].substr(val.length);\r\n          }\r\n          /*insert a input field that will hold the current array item's value:*/\r\n          b.innerHTML += \"<input type='hidden' value='\" + arr[i][that.keyprop] + \"'>\";\r\n          b.innerHTML += \"<input type='hidden' value='\" + ((that.texttemplate != null) ? Tmpl(arr[i], that.texttemplate) : arr[i][that.textprop]) + \"'>\";\r\n          /*execute a function when someone clicks on the item value (DIV element):*/\r\n          b.addEventListener(\"click\", function (e) {\r\n            /*insert the value for the autocomplete text field:*/\r\n            inp.value = this.getElementsByTagName(\"input\")[1].value;\r\n            inp.dataset['key'] = this.getElementsByTagName(\"input\")[0].value;\r\n            //that.fireEvent('change', 'value', { key: inp.dataset.key, value: inp.value })\r\n            that.change.emit({ key: inp.dataset['key'], value: inp.value })\r\n            /*close the list of autocompleted values,\r\n            (or any other open lists of autocompleted values:*/\r\n            closeAllLists();\r\n          });\r\n          a.appendChild(b);\r\n        }\r\n      }\r\n    });\r\n    /*execute a function presses a key on the keyboard:*/\r\n    inp.addEventListener(\"keydown\", function (e) {\r\n      var x: any = document.getElementById(this.id + \"autocomplete-list\");\r\n      if (x) x = x.getElementsByTagName(\"div\");\r\n      if (e.keyCode == 40) {\r\n        /*If the arrow DOWN key is pressed,\r\n        increase the currentFocus variable:*/\r\n        currentFocus++;\r\n        /*and and make the current item more visible:*/\r\n        addActive(x);\r\n      } else if (e.keyCode == 38) { //up\r\n        /*If the arrow UP key is pressed,\r\n        decrease the currentFocus variable:*/\r\n        currentFocus--;\r\n        /*and and make the current item more visible:*/\r\n        addActive(x);\r\n      } else if (e.keyCode == 13) {\r\n        /*If the ENTER key is pressed, prevent the form from being submitted,*/\r\n        e.preventDefault();\r\n        if (currentFocus > -1) {\r\n          /*and simulate a click on the \"active\" item:*/\r\n          if (x) x[currentFocus].click();\r\n        }\r\n      }\r\n    });\r\n\r\n\r\n    /*execute a function when someone clicks in the document:*/\r\n    document.addEventListener(\"click\", function (e) {\r\n      if (that.keepopen === false)\r\n        closeAllLists(e.target);\r\n    });\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n  \r\n  \r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\nimport { ViewEncapsulation } from '@angular/core';\r\n\r\n\r\n\r\n@Component({\r\n  selector: 'dm-autocomplete',\r\n  templateUrl: 'Autocomplete.component.html',\r\n  styleUrls: ['Autocomplete.component.css'],\r\n  encapsulation: ViewEncapsulation.None\r\n})\r\n\r\nexport class AutoComplete implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('myInput') inp: ElementRef<HTMLInputElement>;\r\n\r\n  @Output()\r\n  change = new EventEmitter<any>()\r\n  @Output()\r\n  input = new EventEmitter<string>()\r\n\r\n  //#region Input Props\r\n\r\n  @Input()\r\n  public records: any[] = []\r\n  @Input()\r\n  public placeholder: string = ''\r\n  @Input()\r\n  public keyprop: string = 'key'\r\n  @Input()\r\n  public textprop: string = 'name'\r\n  @Input()\r\n  public keepopen: boolean = false\r\n  @Input()\r\n  public texttemplate: string = null\r\n  @Input()\r\n  public template: string = null\r\n  @Input()\r\n  public mincharAjax: number = 3\r\n  @Input()\r\n  public url: string = null\r\n  @Input()\r\n  public inputClass: string = 'dm-textbox'\r\n\r\n  @Input()\r\n  public id: string = 'dm-autocomplete'\r\n\r\n  //#endregion\r\n\r\n\r\n  //#region Properties\r\n\r\n  private _isLoading: boolean;\r\n  public get isLoading(): boolean {\r\n    return this._isLoading;\r\n  }\r\n  public set isLoading(v: boolean) {\r\n    this._isLoading = v;\r\n  }\r\n\r\n\r\n  //#endregion\r\n\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) { }\r\n\r\n\r\n  ngOnInit(): void {\r\n    setTimeout(() => {\r\n   \r\n      \r\n      this.setAutoComplete()\r\n    }, 200);\r\n  }\r\n\r\n  setAutoComplete(records: any[] = undefined) {\r\n\r\n    if (records) {\r\n      this.autocomplete(this.inp.nativeElement, records)\r\n\r\n    } else {\r\n      this.autocomplete(this.inp.nativeElement, this.records)\r\n\r\n    }\r\n  }\r\n\r\n  autocomplete(inp: HTMLInputElement, rec: any[]) {\r\n\r\n    let arr = rec != null ? rec : this.records;\r\n    const that = this;\r\n    /*the autocomplete function takes two arguments,\r\n    the text field element and an array of possible autocompleted values:*/\r\n    let currentFocus: number;\r\n    const Tmpl = (rec: any, _tempStr: string) => {\r\n\r\n\r\n      let _template = _tempStr;\r\n\r\n      //Get Child\r\n      const gc = (key: string, item: any) => {\r\n\r\n        let retItem = item;\r\n        const keys = key.split('.');\r\n        for (const _key of keys) {\r\n          const split = _key.split('.');\r\n          const newKey = split.length > 1 ? split[1] : split[0];\r\n          retItem = retItem[newKey]\r\n        }\r\n\r\n\r\n        return retItem;\r\n      }\r\n      const re = /{(.*?)}/g;\r\n\r\n      const tkeys = _template.match(re)\r\n\r\n      tkeys.forEach((k) => {\r\n        k = k.replace('{', '').replace('}', '')\r\n        if (k.indexOf('.') === -1)\r\n          _template = _template.replace(`{${k}}`, rec[k]);\r\n        else\r\n          _template = _template.replace(`{${k}}`, gc(k, rec))\r\n\r\n      })\r\n\r\n      return _template;\r\n\r\n    }\r\n\r\n    function addActive(x: any): void | boolean {\r\n      /*a function to classify an item as \"active\":*/\r\n      if (!x) return false;\r\n      /*start by removing the \"active\" class on all items:*/\r\n      removeActive(x);\r\n      if (currentFocus >= x.length) currentFocus = 0;\r\n      if (currentFocus < 0) currentFocus = (x.length - 1);\r\n      /*add class \"autocomplete-active\":*/\r\n      x[currentFocus].classList.add(\"autocomplete-active\");\r\n    }\r\n\r\n    function removeActive(x: any[]) {\r\n      /*a function to remove the \"active\" class from all autocomplete items:*/\r\n      for (var i = 0; i < x.length; i++) {\r\n        x[i].classList.remove(\"autocomplete-active\");\r\n      }\r\n    }\r\n\r\n    function closeAllLists(elmnt: HTMLElement | EventTarget = undefined) {\r\n      /*close all autocomplete lists in the document,\r\n      except the one passed as an argument:*/\r\n      var x = document.querySelectorAll(\".autocomplete-items\");\r\n      for (var i = 0; i < x.length; i++) {\r\n        if (elmnt != x[i] && elmnt != inp) {\r\n          x[i].parentNode.removeChild(x[i]);\r\n        }\r\n      }\r\n    }\r\n\r\n    const isNull = (obj:any):Boolean => obj == null || obj == 'null'\r\n\r\n    /*execute a function when someone writes in the text field:*/\r\n    inp.addEventListener(\"input\", async (e:any): Promise<any> => {\r\n      e.preventDefault();\r\n      var a, b, i, val: any = e.target.value;\r\n\r\n      if (val !== 0)\r\n        //that.fireEvent('input', 'value', val)\r\n        that.input.emit(val)\r\n      /*close any already open lists of autocompleted values*/\r\n      if ((that.url != null && that.url != 'null') && that.mincharAjax <= val.length) {\r\n        if (that.isLoading === true) return;\r\n        const res = await fetch(that.url.replace('=q', `=${val}`))\r\n        const records = await res.json();\r\n        that.isLoading = false;\r\n        arr = records;\r\n      }\r\n      closeAllLists();\r\n      if (!val) { return false; }\r\n      currentFocus = -1;\r\n      /*create a DIV element that will contain the items (values):*/\r\n      a = document.createElement(\"DIV\");\r\n      a.setAttribute(\"id\", this.id + \"autocomplete-list\");\r\n      a.setAttribute(\"class\", \"autocomplete-items\");\r\n      /*append the DIV element as a child of the autocomplete container:*/\r\n      e.target.parentNode.appendChild(a);\r\n      if (arr.length === 0) arr = that.records;\r\n      debugger;\r\n      /*for each item in the array...*/\r\n      for (i = 0; i < arr.length; i++) {\r\n        /*check if the item starts with the same letters as the text field value:*/\r\n        if (arr[i][that.textprop].substr(0, val.length).toUpperCase() == val.toUpperCase()) {\r\n          /*create a DIV element for each matching element:*/\r\n          b = document.createElement(\"DIV\");\r\n          /*make the matching letters bold:*/\r\n          b.innerHTML = isNull(that.template) == false ? Tmpl(arr[i], that.template) : \"<strong>\" + arr[i][that.textprop].substr(0, val.length) + \"</strong>\";\r\n          if (isNull(that.template)) {\r\n\r\n            b.innerHTML += arr[i][that.textprop].substr(val.length);\r\n          }\r\n          /*insert a input field that will hold the current array item's value:*/\r\n          b.innerHTML += \"<input type='hidden' value='\" + arr[i][that.keyprop] + \"'>\";\r\n          b.innerHTML += \"<input type='hidden' value='\" + ((isNull(that.texttemplate) == false) ? Tmpl(arr[i], that.texttemplate) : arr[i][that.textprop]) + \"'>\";\r\n          /*execute a function when someone clicks on the item value (DIV element):*/\r\n          b.addEventListener(\"click\", function (e) {\r\n            /*insert the value for the autocomplete text field:*/\r\n            inp.value = this.getElementsByTagName(\"input\")[1].value;\r\n            inp.dataset['key'] = this.getElementsByTagName(\"input\")[0].value;\r\n            //that.fireEvent('change', 'value', { key: inp.dataset.key, value: inp.value })\r\n            that.change.emit({ key: inp.dataset['key'], value: inp.value })\r\n            /*close the list of autocompleted values,\r\n            (or any other open lists of autocompleted values:*/\r\n            closeAllLists();\r\n          });\r\n          a.appendChild(b);\r\n        }\r\n      }\r\n    });\r\n    /*execute a function presses a key on the keyboard:*/\r\n    inp.addEventListener(\"keydown\", function (e) {\r\n      debugger;\r\n      var x: any = document.getElementById(that.id + \"autocomplete-list\");\r\n      if (x) x = x.getElementsByTagName(\"div\");\r\n      if (e.keyCode == 40) {\r\n        /*If the arrow DOWN key is pressed,\r\n        increase the currentFocus variable:*/\r\n        currentFocus++;\r\n        /*and and make the current item more visible:*/\r\n        addActive(x);\r\n      } else if (e.keyCode == 38) { //up\r\n        /*If the arrow UP key is pressed,\r\n        decrease the currentFocus variable:*/\r\n        currentFocus--;\r\n        /*and and make the current item more visible:*/\r\n        addActive(x);\r\n      } else if (e.keyCode == 13) {\r\n        /*If the ENTER key is pressed, prevent the form from being submitted,*/\r\n        e.preventDefault();\r\n        if (currentFocus > -1) {\r\n          /*and simulate a click on the \"active\" item:*/\r\n          if (x) x[currentFocus].click();\r\n        }\r\n      }\r\n    });\r\n\r\n\r\n    /*execute a function when someone clicks in the document:*/\r\n    document.addEventListener(\"click\", function (e) {\r\n      if (that.keepopen === false)\r\n        closeAllLists(e.target);\r\n    });\r\n  }\r\n\r\n  LoadExternerDeps() {\r\n  \r\n  \r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -682,6 +695,7 @@
                     }
                 ]
             },
+            "extends": [],
             "implements": [
                 "AfterViewInit",
                 "OnInit"
@@ -727,205 +741,8 @@
             "templateData": "<div class=\"autocomplete\">\r\n  <input\r\n    id=\"myInput\"\r\n    #myInput\r\n    autocomplete=\"off\"\r\n    class=\"{{ this.inputClass }}\"\r\n    type=\"text\"\r\n    placeholder=\"{{ this.placeholder }}\"\r\n  />\r\n</div>\r\n"
         },
         {
-            "name": "ButtonComponent",
-            "id": "component-ButtonComponent-8ceaf520f96e5437b08eeda244d84efb29effe62ddca4fc38eaa229085c2a1126c5715e61445bae741505aca1e4d377b350cb05fadd1dc45d9b2bbf7527029f1",
-            "file": "src/stories/button.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-button",
-            "styleUrls": [
-                "./button.css"
-            ],
-            "styles": [],
-            "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "backgroundColor",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nWhat background color to use\n",
-                    "description": "<p>What background color to use</p>\n",
-                    "line": 26,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "label",
-                    "defaultValue": "'Button'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "pos": 747,
-                            "end": 761,
-                            "flags": 4227072,
-                            "modifierFlagsCache": 0,
-                            "transformFlags": 0,
-                            "kind": 325,
-                            "tagName": {
-                                "pos": 748,
-                                "end": 756,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "required"
-                            },
-                            "comment": ""
-                        }
-                    ],
-                    "rawdescription": "\n\nButton contents\n\n",
-                    "description": "<p>Button contents</p>\n",
-                    "line": 40,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "primary",
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nIs this the principal call to action on the page?\n",
-                    "description": "<p>Is this the principal call to action on the page?</p>\n",
-                    "line": 20,
-                    "type": "boolean",
-                    "decorators": []
-                },
-                {
-                    "name": "size",
-                    "defaultValue": "'medium'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nHow large should the button be?\n",
-                    "description": "<p>How large should the button be?</p>\n",
-                    "line": 32,
-                    "type": "\"small\" | \"medium\" | \"large\"",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onClick",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nOptional click handler\n",
-                    "description": "<p>Optional click handler</p>\n",
-                    "line": 46,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'storybook-button',\r\n  template: ` <button\r\n    type=\"button\"\r\n    (click)=\"onClick.emit($event)\"\r\n    [ngClass]=\"classes\"\r\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\r\n  >\r\n    {{ label }}\r\n  </button>`,\r\n  styleUrls: ['./button.css'],\r\n})\r\nexport default class ButtonComponent {\r\n  /**\r\n   * Is this the principal call to action on the page?\r\n   */\r\n  @Input()\r\n  primary = false;\r\n\r\n  /**\r\n   * What background color to use\r\n   */\r\n  @Input()\r\n  backgroundColor?: string;\r\n\r\n  /**\r\n   * How large should the button be?\r\n   */\r\n  @Input()\r\n  size: 'small' | 'medium' | 'large' = 'medium';\r\n\r\n  /**\r\n   * Button contents\r\n   *\r\n   * @required\r\n   */\r\n  @Input()\r\n  label = 'Button';\r\n\r\n  /**\r\n   * Optional click handler\r\n   */\r\n  @Output()\r\n  onClick = new EventEmitter<Event>();\r\n\r\n  public get classes(): string[] {\r\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\r\n\r\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\r\n  }\r\n}\r\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".storybook-button {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  font-weight: 700;\r\n  border: 0;\r\n  border-radius: 3em;\r\n  cursor: pointer;\r\n  display: inline-block;\r\n  line-height: 1;\r\n}\r\n.storybook-button--primary {\r\n  color: white;\r\n  background-color: #1ea7fd;\r\n}\r\n.storybook-button--secondary {\r\n  color: #333;\r\n  background-color: transparent;\r\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\r\n}\r\n.storybook-button--small {\r\n  font-size: 12px;\r\n  padding: 10px 16px;\r\n}\r\n.storybook-button--medium {\r\n  font-size: 14px;\r\n  padding: 11px 20px;\r\n}\r\n.storybook-button--large {\r\n  font-size: 16px;\r\n  padding: 12px 24px;\r\n}\r\n",
-                    "styleUrl": "./button.css"
-                }
-            ],
-            "stylesData": "",
-            "accessors": {
-                "classes": {
-                    "name": "classes",
-                    "getSignature": {
-                        "name": "classes",
-                        "type": "[]",
-                        "returnType": "string[]",
-                        "line": 48
-                    }
-                }
-            }
-        },
-        {
-            "name": "HeaderComponent",
-            "id": "component-HeaderComponent-bda17aa3451a9f731685153f2587877b8267c32007f05e7abad3581336e6bc02346a1b660e8c69c4d90b4526b6e047b3ac1f4246252c9dc83985c9148aab5e97",
-            "file": "src/stories/header.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-header",
-            "styleUrls": [
-                "./header.css"
-            ],
-            "styles": [],
-            "template": "<header>    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 65,
-                    "type": "User | null",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onCreateAccount",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 74,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogin",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 68,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogout",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 71,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\nimport { User } from './User';\r\n\r\n@Component({\r\n  selector: 'storybook-header',\r\n  template: `<header>\r\n    <div class=\"wrapper\">\r\n      <div>\r\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\r\n          <g fill=\"none\" fillRule=\"evenodd\">\r\n            <path\r\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\r\n              fill=\"#FFF\"\r\n            />\r\n            <path\r\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\r\n              fill=\"#555AB9\"\r\n            />\r\n            <path\r\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\r\n              fill=\"#91BAF8\"\r\n            />\r\n          </g>\r\n        </svg>\r\n        <h1>Acme</h1>\r\n      </div>\r\n      <div>\r\n        <div *ngIf=\"user\">\r\n          <span class=\"welcome\">\r\n            Welcome, <b>{{ user.name }}</b\r\n            >!\r\n          </span>\r\n          <storybook-button\r\n            *ngIf=\"user\"\r\n            size=\"small\"\r\n            (onClick)=\"onLogout.emit($event)\"\r\n            label=\"Log out\"\r\n          ></storybook-button>\r\n        </div>\r\n        <div *ngIf=\"!user\">\r\n          <storybook-button\r\n            *ngIf=\"!user\"\r\n            size=\"small\"\r\n            class=\"margin-left\"\r\n            (onClick)=\"onLogin.emit($event)\"\r\n            label=\"Log in\"\r\n          ></storybook-button>\r\n          <storybook-button\r\n            *ngIf=\"!user\"\r\n            primary\r\n            size=\"small\"\r\n            primary=\"true\"\r\n            class=\"margin-left\"\r\n            (onClick)=\"onCreateAccount.emit($event)\"\r\n            label=\"Sign up\"\r\n          ></storybook-button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </header>`,\r\n  styleUrls: ['./header.css'],\r\n})\r\nexport default class HeaderComponent {\r\n  @Input()\r\n  user: User | null = null;\r\n\r\n  @Output()\r\n  onLogin = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onLogout = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onCreateAccount = new EventEmitter<Event>();\r\n}\r\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".wrapper {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\r\n  padding: 15px 20px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\nsvg {\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\nh1 {\r\n  font-weight: 900;\r\n  font-size: 20px;\r\n  line-height: 1;\r\n  margin: 6px 0 6px 10px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\nbutton + button {\r\n  margin-left: 10px;\r\n}\r\n\r\n.welcome {\r\n  color: #333;\r\n  font-size: 14px;\r\n  margin-right: 10px;\r\n}\r\n",
-                    "styleUrl": "./header.css"
-                }
-            ],
-            "stylesData": ""
-        },
-        {
             "name": "JSONForm",
-            "id": "component-JSONForm-6435ce5f1394269f7a6b4e30a0b763f37dfc8eef06c630652c1bdb2ca73c1a1bb946e549696e598958686145194e5f71c30991a02662e2f953721b02308f84d9",
+            "id": "component-JSONForm-e92427e3ef0219ca3ca610709165487bf3d6456514b5b9794394c71019efab8801949271e293b3b37c8c2ed26c9b69709ca0c60f060765c36404d8d146ad178a",
             "file": "src/stories/JSONForm/JSONForm.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -941,6 +758,7 @@
                 "JSONForm.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "data",
@@ -1000,7 +818,7 @@
                     "description": "",
                     "line": 39,
                     "modifierKind": [
-                        121
+                        123
                     ]
                 },
                 {
@@ -1035,6 +853,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'jsonform'"
                         }
+                    ],
+                    "modifierKind": [
+                        170
                     ]
                 }
             ],
@@ -1104,10 +925,12 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private editorOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.editorOptions.schema = this.schema;\r\n\r\n    this.editorOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.editorOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn(window.JSONEditor)\r\n\r\n        if (window.JSONEditor && typeof this.editorOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport { Output, EventEmitter } from '@angular/core';\r\nimport { Component, ViewChild, ElementRef, AfterViewInit, Renderer2, Input, Inject, OnInit } from '@angular/core';\r\nimport { DocUtils } from '../docUtils';\r\n\r\n\r\ndeclare global {\r\n  interface Window {\r\n    JSONEditor: any;\r\n  }\r\n}\r\n\r\n@Component({\r\n  selector: 'dm-json-form',\r\n  templateUrl: 'JSONForm.component.html',\r\n  styleUrls: ['JSONForm.component.css']\r\n})\r\n\r\nexport class JSONForm implements AfterViewInit, OnInit {\r\n\r\n  @ViewChild('jsonform') jsonform: ElementRef<HTMLInputElement>;\r\n  @Output()\r\n  change = new EventEmitter<Event>()\r\n  jsonEditor: any = undefined;\r\n\r\n  @Input()\r\n  schema: any = {}\r\n\r\n  @Input()\r\n  data: any = {}\r\n\r\n\r\n  @Input()\r\n  enabled: boolean = true\r\n\r\n  @Input()\r\n  title: string = 'JSON Form Component From Darshan'\r\n\r\n  private editorOptions = {\r\n    iconlib: \"fontawesome5\",\r\n    object_layout: \"normal\",\r\n    schema: this.schema || {},\r\n    show_errors: \"interaction\",\r\n    theme: \"bootstrap4\",\r\n\r\n    startval: this.data || {},\r\n  };\r\n\r\n  inter: NodeJS.Timer;\r\n\r\n\r\n  constructor(private renderer: Renderer2,\r\n    @Inject(DOCUMENT) private document: Document) {\r\n    this.setUpEditor.bind(this);\r\n    this.initJsoneditor.bind(this);\r\n    this.validate.bind(this)\r\n  }\r\n\r\n\r\n  ngOnInit(): void {\r\n\r\n  }\r\n\r\n\r\n  setUpEditor() {\r\n    if (this.jsonEditor) {\r\n      this.jsonEditor.destroy();\r\n    }\r\n\r\n    this.editorOptions.schema = this.schema;\r\n\r\n    this.editorOptions.startval = this.data;\r\n\r\n    this.jsonEditor = new window.JSONEditor(\r\n      this.jsonform.nativeElement,\r\n      this.editorOptions\r\n    );\r\n    console.log(\"Inside SetupEditor\", this.jsonEditor)\r\n    this.jsonEditor.on(\"change\", () => {\r\n      if (this.validate()) {\r\n        const value = this.jsonEditor.getValue();\r\n        console.warn(value, \"value\")\r\n\r\n        this.change.emit(value);\r\n      }\r\n\r\n    });\r\n    this.jsonEditor.on(\"ready\", () => {\r\n      // Now the api methods will be available\r\n\r\n      if (this.enabled !== true) {\r\n        this.jsonEditor.disable();\r\n      }\r\n    });\r\n    console.log(this.jsonEditor)\r\n  }\r\n\r\n  validate() {\r\n    const errors = this.jsonEditor.validate();\r\n\r\n    return errors.length === 0;\r\n  }\r\n\r\n  initJsoneditor() {\r\n    // destroy old JSONEditor instance if exists\r\n\r\n\r\n    if (window.JSONEditor) {\r\n      this.setUpEditor();\r\n    } else {\r\n\r\n      this.inter = setInterval(() => {\r\n        console.warn('Waiting for JSON Editor to be defined on the window object.');\r\n\r\n        if (window.JSONEditor && typeof this.editorOptions !== 'string') {\r\n          clearInterval(this.inter);\r\n          this.setUpEditor();\r\n        }\r\n      }, 3000);\r\n    }\r\n    // new instance of JSONEditor\r\n\r\n    // listen for changes\r\n  };\r\n\r\n\r\n\r\n  LoadExternerDeps() {\r\n    const doc = new DocUtils(this.document);\r\n    doc.loadJsScript(this.renderer, \"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\");\r\n    doc.loadCss(this.renderer, \"https://use.fontawesome.com/releases/v5.6.1/css/all.css\");\r\n    doc.loadCss(this.renderer, \"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\")\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n\r\n\r\n\r\n    if (this.jsonform !== undefined) {\r\n\r\n      this.LoadExternerDeps()\r\n      this.initJsoneditor();\r\n\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1157,91 +980,12 @@
                     }
                 ]
             },
+            "extends": [],
             "implements": [
                 "AfterViewInit",
                 "OnInit"
             ],
-            "templateData": "<link href=\"https://use.fontawesome.com/releases/v5.6.1/css/all.css\" rel=\"stylesheet\" />\r\n<link href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\" rel=\"stylesheet\" />\r\n\r\n<script src=\"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\"></script>\r\n\r\n{{title}}\r\n<div id=\"jsonform\" #jsonform>\r\n\r\n</div>\r\n\r\n\r\n"
-        },
-        {
-            "name": "PageComponent",
-            "id": "component-PageComponent-1fc7c24c98b4f0b0f413d91f5a6126f11ad55647457f5a7f372b7f83fe8ecd6dbe67b5ca4b826ed20b9bfbc04d5606b15f82a203b1311f98b18bd28ec9f4fc7c",
-            "file": "src/stories/page.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-page",
-            "styleUrls": [
-                "./page.css"
-            ],
-            "styles": [],
-            "template": "<article>    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "User | null",
-                    "optional": false,
-                    "description": "",
-                    "line": 64
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "doCreateAccount",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 74,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogin",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 70,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogout",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 66,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { User } from './User';\r\n\r\n@Component({\r\n  selector: 'storybook-page',\r\n  template: `<article>\r\n    <storybook-header\r\n      [user]=\"user\"\r\n      (onLogout)=\"doLogout()\"\r\n      (onLogin)=\"doLogin()\"\r\n      (onCreateAccount)=\"doCreateAccount()\"\r\n    ></storybook-header>\r\n    <section>\r\n      <h2>Pages in Storybook</h2>\r\n      <p>\r\n        We recommend building UIs with a\r\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\r\n          <strong>component-driven</strong>\r\n        </a>\r\n        process starting with atomic components and ending with pages.\r\n      </p>\r\n      <p>\r\n        Render pages with mock data. This makes it easy to build and review page states without\r\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\r\n        in Storybook:\r\n      </p>\r\n      <ul>\r\n        <li>\r\n          Use a higher-level connected component. Storybook helps you compose such data from the\r\n          \"args\" of child component stories\r\n        </li>\r\n        <li>\r\n          Assemble data in the page component from your services. You can mock these services out\r\n          using Storybook.\r\n        </li>\r\n      </ul>\r\n      <p>\r\n        Get a guided tutorial on component-driven development at\r\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\r\n          Storybook tutorials\r\n        </a>\r\n        . Read more in the\r\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\r\n        .\r\n      </p>\r\n      <div class=\"tip-wrapper\">\r\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\r\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\r\n          <g fill=\"none\" fillRule=\"evenodd\">\r\n            <path\r\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\r\n              id=\"a\"\r\n              fill=\"#999\"\r\n            />\r\n          </g>\r\n        </svg>\r\n        Viewports addon in the toolbar\r\n      </div>\r\n    </section>\r\n  </article>`,\r\n  styleUrls: ['./page.css'],\r\n})\r\nexport default class PageComponent {\r\n  user: User | null = null;\r\n\r\n  doLogout() {\r\n    this.user = null;\r\n  }\r\n\r\n  doLogin() {\r\n    this.user = { name: 'Jane Doe' };\r\n  }\r\n\r\n  doCreateAccount() {\r\n    this.user = { name: 'Jane Doe' };\r\n  }\r\n}\r\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "section {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  font-size: 14px;\r\n  line-height: 24px;\r\n  padding: 48px 20px;\r\n  margin: 0 auto;\r\n  max-width: 600px;\r\n  color: #333;\r\n}\r\n\r\nsection h2 {\r\n  font-weight: 900;\r\n  font-size: 32px;\r\n  line-height: 1;\r\n  margin: 0 0 4px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\nsection p {\r\n  margin: 1em 0;\r\n}\r\n\r\nsection a {\r\n  text-decoration: none;\r\n  color: #1ea7fd;\r\n}\r\n\r\nsection ul {\r\n  padding-left: 30px;\r\n  margin: 1em 0;\r\n}\r\n\r\nsection li {\r\n  margin-bottom: 8px;\r\n}\r\n\r\nsection .tip {\r\n  display: inline-block;\r\n  border-radius: 1em;\r\n  font-size: 11px;\r\n  line-height: 12px;\r\n  font-weight: 700;\r\n  background: #e7fdd8;\r\n  color: #66bf3c;\r\n  padding: 4px 12px;\r\n  margin-right: 10px;\r\n  vertical-align: top;\r\n}\r\n\r\nsection .tip-wrapper {\r\n  font-size: 13px;\r\n  line-height: 20px;\r\n  margin-top: 40px;\r\n  margin-bottom: 40px;\r\n}\r\n\r\nsection .tip-wrapper svg {\r\n  display: inline-block;\r\n  height: 12px;\r\n  width: 12px;\r\n  margin-right: 4px;\r\n  vertical-align: top;\r\n  margin-top: 3px;\r\n}\r\n\r\nsection .tip-wrapper svg path {\r\n  fill: #1ea7fd;\r\n}\r\n",
-                    "styleUrl": "./page.css"
-                }
-            ],
-            "stylesData": ""
+            "templateData": "<link\r\n  href=\"https://use.fontawesome.com/releases/v5.6.1/css/all.css\"\r\n  rel=\"stylesheet\"\r\n/>\r\n<link\r\n  href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\"\r\n  rel=\"stylesheet\"\r\n/>\r\n\r\n<script src=\"https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js\"></script>\r\n\r\n{{ title }}\r\n<div id=\"jsonform\" #jsonform></div>\r\n"
         }
     ],
     "modules": [
@@ -1313,7 +1057,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  onChange: action('onChange'),\r\n\r\n}"
+                "defaultValue": "{\r\n  onChange: action('onChange'),\r\n}"
             },
             {
                 "name": "AutoAjax",
@@ -1336,16 +1080,6 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "context",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-            },
-            {
                 "name": "data",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1353,7 +1087,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\r\n  {name: 'Afghanistan', code: 'AF'},\r\n  {name: 'Åland Islands', code: 'AX'},\r\n  {name: 'Albania', code: 'AL'},\r\n  {name: 'Algeria', code: 'DZ'},\r\n  {name: 'American Samoa', code: 'AS'},\r\n  {name: 'AndorrA', code: 'AD'},\r\n  {name: 'Angola', code: 'AO'},\r\n  {name: 'Anguilla', code: 'AI'},\r\n  {name: 'Antarctica', code: 'AQ'},\r\n  {name: 'Antigua and Barbuda', code: 'AG'},\r\n  {name: 'Argentina', code: 'AR'},\r\n  {name: 'Armenia', code: 'AM'},\r\n  {name: 'Aruba', code: 'AW'},\r\n  {name: 'Australia', code: 'AU'},\r\n  {name: 'Austria', code: 'AT'},\r\n  {name: 'Azerbaijan', code: 'AZ'},\r\n  {name: 'Bahamas', code: 'BS'},\r\n  {name: 'Bahrain', code: 'BH'},\r\n  {name: 'Bangladesh', code: 'BD'},\r\n  {name: 'Barbados', code: 'BB'},\r\n  {name: 'Belarus', code: 'BY'},\r\n  {name: 'Belgium', code: 'BE'},\r\n  {name: 'Belize', code: 'BZ'},\r\n  {name: 'Benin', code: 'BJ'},\r\n  {name: 'Bermuda', code: 'BM'},\r\n  {name: 'Bhutan', code: 'BT'},\r\n  {name: 'Bolivia', code: 'BO'},\r\n  {name: 'Bosnia and Herzegovina', code: 'BA'},\r\n  {name: 'Botswana', code: 'BW'},\r\n  {name: 'Bouvet Island', code: 'BV'},\r\n  {name: 'Brazil', code: 'BR'},\r\n  {name: 'British Indian Ocean Territory', code: 'IO'},\r\n  {name: 'Brunei Darussalam', code: 'BN'},\r\n  {name: 'Bulgaria', code: 'BG'},\r\n  {name: 'Burkina Faso', code: 'BF'},\r\n  {name: 'Burundi', code: 'BI'},\r\n  {name: 'Cambodia', code: 'KH'},\r\n  {name: 'Cameroon', code: 'CM'},\r\n  {name: 'Canada', code: 'CA'},\r\n  {name: 'Cape Verde', code: 'CV'},\r\n  {name: 'Cayman Islands', code: 'KY'},\r\n  {name: 'Central African Republic', code: 'CF'},\r\n  {name: 'Chad', code: 'TD'},\r\n  {name: 'Chile', code: 'CL'},\r\n  {name: 'China', code: 'CN'},\r\n  {name: 'Christmas Island', code: 'CX'},\r\n  {name: 'Cocos (Keeling) Islands', code: 'CC'},\r\n  {name: 'Colombia', code: 'CO'},\r\n  {name: 'Comoros', code: 'KM'},\r\n  {name: 'Congo', code: 'CG'},\r\n  {name: 'Congo, The Democratic Republic of the', code: 'CD'},\r\n  {name: 'Cook Islands', code: 'CK'},\r\n  {name: 'Costa Rica', code: 'CR'},\r\n  {name: 'Cote D\\'Ivoire', code: 'CI'},\r\n  {name: 'Croatia', code: 'HR'},\r\n  {name: 'Cuba', code: 'CU'},\r\n  {name: 'Cyprus', code: 'CY'},\r\n  {name: 'Czech Republic', code: 'CZ'},\r\n  {name: 'Denmark', code: 'DK'},\r\n  {name: 'Djibouti', code: 'DJ'},\r\n  {name: 'Dominica', code: 'DM'},\r\n  {name: 'Dominican Republic', code: 'DO'},\r\n  {name: 'Ecuador', code: 'EC'},\r\n  {name: 'Egypt', code: 'EG'},\r\n  {name: 'El Salvador', code: 'SV'},\r\n  {name: 'Equatorial Guinea', code: 'GQ'},\r\n  {name: 'Eritrea', code: 'ER'},\r\n  {name: 'Estonia', code: 'EE'},\r\n  {name: 'Ethiopia', code: 'ET'},\r\n  {name: 'Falkland Islands (Malvinas)', code: 'FK'},\r\n  {name: 'Faroe Islands', code: 'FO'},\r\n  {name: 'Fiji', code: 'FJ'},\r\n  {name: 'Finland', code: 'FI'},\r\n  {name: 'France', code: 'FR'},\r\n  {name: 'French Guiana', code: 'GF'},\r\n  {name: 'French Polynesia', code: 'PF'},\r\n  {name: 'French Southern Territories', code: 'TF'},\r\n  {name: 'Gabon', code: 'GA'},\r\n  {name: 'Gambia', code: 'GM'},\r\n  {name: 'Georgia', code: 'GE'},\r\n  {name: 'Germany', code: 'DE'},\r\n  {name: 'Ghana', code: 'GH'},\r\n  {name: 'Gibraltar', code: 'GI'},\r\n  {name: 'Greece', code: 'GR'},\r\n  {name: 'Greenland', code: 'GL'},\r\n  {name: 'Grenada', code: 'GD'},\r\n  {name: 'Guadeloupe', code: 'GP'},\r\n  {name: 'Guam', code: 'GU'},\r\n  {name: 'Guatemala', code: 'GT'},\r\n  {name: 'Guernsey', code: 'GG'},\r\n  {name: 'Guinea', code: 'GN'},\r\n  {name: 'Guinea-Bissau', code: 'GW'},\r\n  {name: 'Guyana', code: 'GY'},\r\n  {name: 'Haiti', code: 'HT'},\r\n  {name: 'Heard Island and Mcdonald Islands', code: 'HM'},\r\n  {name: 'Holy See (Vatican City State)', code: 'VA'},\r\n  {name: 'Honduras', code: 'HN'},\r\n  {name: 'Hong Kong', code: 'HK'},\r\n  {name: 'Hungary', code: 'HU'},\r\n  {name: 'Iceland', code: 'IS'},\r\n  {name: 'India', code: 'IN'},\r\n  {name: 'Indonesia', code: 'ID'},\r\n  {name: 'Iran, Islamic Republic Of', code: 'IR'},\r\n  {name: 'Iraq', code: 'IQ'},\r\n  {name: 'Ireland', code: 'IE'},\r\n  {name: 'Isle of Man', code: 'IM'},\r\n  {name: 'Israel', code: 'IL'},\r\n  {name: 'Italy', code: 'IT'},\r\n  {name: 'Jamaica', code: 'JM'},\r\n  {name: 'Japan', code: 'JP'},\r\n  {name: 'Jersey', code: 'JE'},\r\n  {name: 'Jordan', code: 'JO'},\r\n  {name: 'Kazakhstan', code: 'KZ'},\r\n  {name: 'Kenya', code: 'KE'},\r\n  {name: 'Kiribati', code: 'KI'},\r\n  {name: 'Korea, Democratic People\\'S Republic of', code: 'KP'},\r\n  {name: 'Korea, Republic of', code: 'KR'},\r\n  {name: 'Kuwait', code: 'KW'},\r\n  {name: 'Kyrgyzstan', code: 'KG'},\r\n  {name: 'Lao People\\'S Democratic Republic', code: 'LA'},\r\n  {name: 'Latvia', code: 'LV'},\r\n  {name: 'Lebanon', code: 'LB'},\r\n  {name: 'Lesotho', code: 'LS'},\r\n  {name: 'Liberia', code: 'LR'},\r\n  {name: 'Libyan Arab Jamahiriya', code: 'LY'},\r\n  {name: 'Liechtenstein', code: 'LI'},\r\n  {name: 'Lithuania', code: 'LT'},\r\n  {name: 'Luxembourg', code: 'LU'},\r\n  {name: 'Macao', code: 'MO'},\r\n  {name: 'Macedonia, The Former Yugoslav Republic of', code: 'MK'},\r\n  {name: 'Madagascar', code: 'MG'},\r\n  {name: 'Malawi', code: 'MW'},\r\n  {name: 'Malaysia', code: 'MY'},\r\n  {name: 'Maldives', code: 'MV'},\r\n  {name: 'Mali', code: 'ML'},\r\n  {name: 'Malta', code: 'MT'},\r\n  {name: 'Marshall Islands', code: 'MH'},\r\n  {name: 'Martinique', code: 'MQ'},\r\n  {name: 'Mauritania', code: 'MR'},\r\n  {name: 'Mauritius', code: 'MU'},\r\n  {name: 'Mayotte', code: 'YT'},\r\n  {name: 'Mexico', code: 'MX'},\r\n  {name: 'Micronesia, Federated States of', code: 'FM'},\r\n  {name: 'Moldova, Republic of', code: 'MD'},\r\n  {name: 'Monaco', code: 'MC'},\r\n  {name: 'Mongolia', code: 'MN'},\r\n  {name: 'Montserrat', code: 'MS'},\r\n  {name: 'Morocco', code: 'MA'},\r\n  {name: 'Mozambique', code: 'MZ'},\r\n  {name: 'Myanmar', code: 'MM'},\r\n  {name: 'Namibia', code: 'NA'},\r\n  {name: 'Nauru', code: 'NR'},\r\n  {name: 'Nepal', code: 'NP'},\r\n  {name: 'Netherlands', code: 'NL'},\r\n  {name: 'Netherlands Antilles', code: 'AN'},\r\n  {name: 'New Caledonia', code: 'NC'},\r\n  {name: 'New Zealand', code: 'NZ'},\r\n  {name: 'Nicaragua', code: 'NI'},\r\n  {name: 'Niger', code: 'NE'},\r\n  {name: 'Nigeria', code: 'NG'},\r\n  {name: 'Niue', code: 'NU'},\r\n  {name: 'Norfolk Island', code: 'NF'},\r\n  {name: 'Northern Mariana Islands', code: 'MP'},\r\n  {name: 'Norway', code: 'NO'},\r\n  {name: 'Oman', code: 'OM'},\r\n  {name: 'Pakistan', code: 'PK'},\r\n  {name: 'Palau', code: 'PW'},\r\n  {name: 'Palestinian Territory, Occupied', code: 'PS'},\r\n  {name: 'Panama', code: 'PA'},\r\n  {name: 'Papua New Guinea', code: 'PG'},\r\n  {name: 'Paraguay', code: 'PY'},\r\n  {name: 'Peru', code: 'PE'},\r\n  {name: 'Philippines', code: 'PH'},\r\n  {name: 'Pitcairn', code: 'PN'},\r\n  {name: 'Poland', code: 'PL'},\r\n  {name: 'Portugal', code: 'PT'},\r\n  {name: 'Puerto Rico', code: 'PR'},\r\n  {name: 'Qatar', code: 'QA'},\r\n  {name: 'Reunion', code: 'RE'},\r\n  {name: 'Romania', code: 'RO'},\r\n  {name: 'Russian Federation', code: 'RU'},\r\n  {name: 'RWANDA', code: 'RW'},\r\n  {name: 'Saint Helena', code: 'SH'},\r\n  {name: 'Saint Kitts and Nevis', code: 'KN'},\r\n  {name: 'Saint Lucia', code: 'LC'},\r\n  {name: 'Saint Pierre and Miquelon', code: 'PM'},\r\n  {name: 'Saint Vincent and the Grenadines', code: 'VC'},\r\n  {name: 'Samoa', code: 'WS'},\r\n  {name: 'San Marino', code: 'SM'},\r\n  {name: 'Sao Tome and Principe', code: 'ST'},\r\n  {name: 'Saudi Arabia', code: 'SA'},\r\n  {name: 'Senegal', code: 'SN'},\r\n  {name: 'Serbia and Montenegro', code: 'CS'},\r\n  {name: 'Seychelles', code: 'SC'},\r\n  {name: 'Sierra Leone', code: 'SL'},\r\n  {name: 'Singapore', code: 'SG'},\r\n  {name: 'Slovakia', code: 'SK'},\r\n  {name: 'Slovenia', code: 'SI'},\r\n  {name: 'Solomon Islands', code: 'SB'},\r\n  {name: 'Somalia', code: 'SO'},\r\n  {name: 'South Africa', code: 'ZA'},\r\n  {name: 'South Georgia and the South Sandwich Islands', code: 'GS'},\r\n  {name: 'Spain', code: 'ES'},\r\n  {name: 'Sri Lanka', code: 'LK'},\r\n  {name: 'Sudan', code: 'SD'},\r\n  {name: 'Suriname', code: 'SR'},\r\n  {name: 'Svalbard and Jan Mayen', code: 'SJ'},\r\n  {name: 'Swaziland', code: 'SZ'},\r\n  {name: 'Sweden', code: 'SE'},\r\n  {name: 'Switzerland', code: 'CH'},\r\n  {name: 'Syrian Arab Republic', code: 'SY'},\r\n  {name: 'Taiwan, Province of China', code: 'TW'},\r\n  {name: 'Tajikistan', code: 'TJ'},\r\n  {name: 'Tanzania, United Republic of', code: 'TZ'},\r\n  {name: 'Thailand', code: 'TH'},\r\n  {name: 'Timor-Leste', code: 'TL'},\r\n  {name: 'Togo', code: 'TG'},\r\n  {name: 'Tokelau', code: 'TK'},\r\n  {name: 'Tonga', code: 'TO'},\r\n  {name: 'Trinidad and Tobago', code: 'TT'},\r\n  {name: 'Tunisia', code: 'TN'},\r\n  {name: 'Turkey', code: 'TR'},\r\n  {name: 'Turkmenistan', code: 'TM'},\r\n  {name: 'Turks and Caicos Islands', code: 'TC'},\r\n  {name: 'Tuvalu', code: 'TV'},\r\n  {name: 'Uganda', code: 'UG'},\r\n  {name: 'Ukraine', code: 'UA'},\r\n  {name: 'United Arab Emirates', code: 'AE'},\r\n  {name: 'United Kingdom', code: 'GB'},\r\n  {name: 'United States', code: 'US'},\r\n  {name: 'United States Minor Outlying Islands', code: 'UM'},\r\n  {name: 'Uruguay', code: 'UY'},\r\n  {name: 'Uzbekistan', code: 'UZ'},\r\n  {name: 'Vanuatu', code: 'VU'},\r\n  {name: 'Venezuela', code: 'VE'},\r\n  {name: 'Viet Nam', code: 'VN'},\r\n  {name: 'Virgin Islands, British', code: 'VG'},\r\n  {name: 'Virgin Islands, U.S.', code: 'VI'},\r\n  {name: 'Wallis and Futuna', code: 'WF'},\r\n  {name: 'Western Sahara', code: 'EH'},\r\n  {name: 'Yemen', code: 'YE'},\r\n  {name: 'Zambia', code: 'ZM'},\r\n  {name: 'Zimbabwe', code: 'ZW'}\r\n]"
+                "defaultValue": "[\r\n  { name: 'Afghanistan', code: 'AF' },\r\n  { name: 'Åland Islands', code: 'AX' },\r\n  { name: 'Albania', code: 'AL' },\r\n  { name: 'Algeria', code: 'DZ' },\r\n  { name: 'American Samoa', code: 'AS' },\r\n  { name: 'AndorrA', code: 'AD' },\r\n  { name: 'Angola', code: 'AO' },\r\n  { name: 'Anguilla', code: 'AI' },\r\n  { name: 'Antarctica', code: 'AQ' },\r\n  { name: 'Antigua and Barbuda', code: 'AG' },\r\n  { name: 'Argentina', code: 'AR' },\r\n  { name: 'Armenia', code: 'AM' },\r\n  { name: 'Aruba', code: 'AW' },\r\n  { name: 'Australia', code: 'AU' },\r\n  { name: 'Austria', code: 'AT' },\r\n  { name: 'Azerbaijan', code: 'AZ' },\r\n  { name: 'Bahamas', code: 'BS' },\r\n  { name: 'Bahrain', code: 'BH' },\r\n  { name: 'Bangladesh', code: 'BD' },\r\n  { name: 'Barbados', code: 'BB' },\r\n  { name: 'Belarus', code: 'BY' },\r\n  { name: 'Belgium', code: 'BE' },\r\n  { name: 'Belize', code: 'BZ' },\r\n  { name: 'Benin', code: 'BJ' },\r\n  { name: 'Bermuda', code: 'BM' },\r\n  { name: 'Bhutan', code: 'BT' },\r\n  { name: 'Bolivia', code: 'BO' },\r\n  { name: 'Bosnia and Herzegovina', code: 'BA' },\r\n  { name: 'Botswana', code: 'BW' },\r\n  { name: 'Bouvet Island', code: 'BV' },\r\n  { name: 'Brazil', code: 'BR' },\r\n  { name: 'British Indian Ocean Territory', code: 'IO' },\r\n  { name: 'Brunei Darussalam', code: 'BN' },\r\n  { name: 'Bulgaria', code: 'BG' },\r\n  { name: 'Burkina Faso', code: 'BF' },\r\n  { name: 'Burundi', code: 'BI' },\r\n  { name: 'Cambodia', code: 'KH' },\r\n  { name: 'Cameroon', code: 'CM' },\r\n  { name: 'Canada', code: 'CA' },\r\n  { name: 'Cape Verde', code: 'CV' },\r\n  { name: 'Cayman Islands', code: 'KY' },\r\n  { name: 'Central African Republic', code: 'CF' },\r\n  { name: 'Chad', code: 'TD' },\r\n  { name: 'Chile', code: 'CL' },\r\n  { name: 'China', code: 'CN' },\r\n  { name: 'Christmas Island', code: 'CX' },\r\n  { name: 'Cocos (Keeling) Islands', code: 'CC' },\r\n  { name: 'Colombia', code: 'CO' },\r\n  { name: 'Comoros', code: 'KM' },\r\n  { name: 'Congo', code: 'CG' },\r\n  { name: 'Congo, The Democratic Republic of the', code: 'CD' },\r\n  { name: 'Cook Islands', code: 'CK' },\r\n  { name: 'Costa Rica', code: 'CR' },\r\n  { name: 'Cote D\\'Ivoire', code: 'CI' },\r\n  { name: 'Croatia', code: 'HR' },\r\n  { name: 'Cuba', code: 'CU' },\r\n  { name: 'Cyprus', code: 'CY' },\r\n  { name: 'Czech Republic', code: 'CZ' },\r\n  { name: 'Denmark', code: 'DK' },\r\n  { name: 'Djibouti', code: 'DJ' },\r\n  { name: 'Dominica', code: 'DM' },\r\n  { name: 'Dominican Republic', code: 'DO' },\r\n  { name: 'Ecuador', code: 'EC' },\r\n  { name: 'Egypt', code: 'EG' },\r\n  { name: 'El Salvador', code: 'SV' },\r\n  { name: 'Equatorial Guinea', code: 'GQ' },\r\n  { name: 'Eritrea', code: 'ER' },\r\n  { name: 'Estonia', code: 'EE' },\r\n  { name: 'Ethiopia', code: 'ET' },\r\n  { name: 'Falkland Islands (Malvinas)', code: 'FK' },\r\n  { name: 'Faroe Islands', code: 'FO' },\r\n  { name: 'Fiji', code: 'FJ' },\r\n  { name: 'Finland', code: 'FI' },\r\n  { name: 'France', code: 'FR' },\r\n  { name: 'French Guiana', code: 'GF' },\r\n  { name: 'French Polynesia', code: 'PF' },\r\n  { name: 'French Southern Territories', code: 'TF' },\r\n  { name: 'Gabon', code: 'GA' },\r\n  { name: 'Gambia', code: 'GM' },\r\n  { name: 'Georgia', code: 'GE' },\r\n  { name: 'Germany', code: 'DE' },\r\n  { name: 'Ghana', code: 'GH' },\r\n  { name: 'Gibraltar', code: 'GI' },\r\n  { name: 'Greece', code: 'GR' },\r\n  { name: 'Greenland', code: 'GL' },\r\n  { name: 'Grenada', code: 'GD' },\r\n  { name: 'Guadeloupe', code: 'GP' },\r\n  { name: 'Guam', code: 'GU' },\r\n  { name: 'Guatemala', code: 'GT' },\r\n  { name: 'Guernsey', code: 'GG' },\r\n  { name: 'Guinea', code: 'GN' },\r\n  { name: 'Guinea-Bissau', code: 'GW' },\r\n  { name: 'Guyana', code: 'GY' },\r\n  { name: 'Haiti', code: 'HT' },\r\n  { name: 'Heard Island and Mcdonald Islands', code: 'HM' },\r\n  { name: 'Holy See (Vatican City State)', code: 'VA' },\r\n  { name: 'Honduras', code: 'HN' },\r\n  { name: 'Hong Kong', code: 'HK' },\r\n  { name: 'Hungary', code: 'HU' },\r\n  { name: 'Iceland', code: 'IS' },\r\n  { name: 'India', code: 'IN' },\r\n  { name: 'Indonesia', code: 'ID' },\r\n  { name: 'Iran, Islamic Republic Of', code: 'IR' },\r\n  { name: 'Iraq', code: 'IQ' },\r\n  { name: 'Ireland', code: 'IE' },\r\n  { name: 'Isle of Man', code: 'IM' },\r\n  { name: 'Israel', code: 'IL' },\r\n  { name: 'Italy', code: 'IT' },\r\n  { name: 'Jamaica', code: 'JM' },\r\n  { name: 'Japan', code: 'JP' },\r\n  { name: 'Jersey', code: 'JE' },\r\n  { name: 'Jordan', code: 'JO' },\r\n  { name: 'Kazakhstan', code: 'KZ' },\r\n  { name: 'Kenya', code: 'KE' },\r\n  { name: 'Kiribati', code: 'KI' },\r\n  { name: 'Korea, Democratic People\\'S Republic of', code: 'KP' },\r\n  { name: 'Korea, Republic of', code: 'KR' },\r\n  { name: 'Kuwait', code: 'KW' },\r\n  { name: 'Kyrgyzstan', code: 'KG' },\r\n  { name: 'Lao People\\'S Democratic Republic', code: 'LA' },\r\n  { name: 'Latvia', code: 'LV' },\r\n  { name: 'Lebanon', code: 'LB' },\r\n  { name: 'Lesotho', code: 'LS' },\r\n  { name: 'Liberia', code: 'LR' },\r\n  { name: 'Libyan Arab Jamahiriya', code: 'LY' },\r\n  { name: 'Liechtenstein', code: 'LI' },\r\n  { name: 'Lithuania', code: 'LT' },\r\n  { name: 'Luxembourg', code: 'LU' },\r\n  { name: 'Macao', code: 'MO' },\r\n  { name: 'Macedonia, The Former Yugoslav Republic of', code: 'MK' },\r\n  { name: 'Madagascar', code: 'MG' },\r\n  { name: 'Malawi', code: 'MW' },\r\n  { name: 'Malaysia', code: 'MY' },\r\n  { name: 'Maldives', code: 'MV' },\r\n  { name: 'Mali', code: 'ML' },\r\n  { name: 'Malta', code: 'MT' },\r\n  { name: 'Marshall Islands', code: 'MH' },\r\n  { name: 'Martinique', code: 'MQ' },\r\n  { name: 'Mauritania', code: 'MR' },\r\n  { name: 'Mauritius', code: 'MU' },\r\n  { name: 'Mayotte', code: 'YT' },\r\n  { name: 'Mexico', code: 'MX' },\r\n  { name: 'Micronesia, Federated States of', code: 'FM' },\r\n  { name: 'Moldova, Republic of', code: 'MD' },\r\n  { name: 'Monaco', code: 'MC' },\r\n  { name: 'Mongolia', code: 'MN' },\r\n  { name: 'Montserrat', code: 'MS' },\r\n  { name: 'Morocco', code: 'MA' },\r\n  { name: 'Mozambique', code: 'MZ' },\r\n  { name: 'Myanmar', code: 'MM' },\r\n  { name: 'Namibia', code: 'NA' },\r\n  { name: 'Nauru', code: 'NR' },\r\n  { name: 'Nepal', code: 'NP' },\r\n  { name: 'Netherlands', code: 'NL' },\r\n  { name: 'Netherlands Antilles', code: 'AN' },\r\n  { name: 'New Caledonia', code: 'NC' },\r\n  { name: 'New Zealand', code: 'NZ' },\r\n  { name: 'Nicaragua', code: 'NI' },\r\n  { name: 'Niger', code: 'NE' },\r\n  { name: 'Nigeria', code: 'NG' },\r\n  { name: 'Niue', code: 'NU' },\r\n  { name: 'Norfolk Island', code: 'NF' },\r\n  { name: 'Northern Mariana Islands', code: 'MP' },\r\n  { name: 'Norway', code: 'NO' },\r\n  { name: 'Oman', code: 'OM' },\r\n  { name: 'Pakistan', code: 'PK' },\r\n  { name: 'Palau', code: 'PW' },\r\n  { name: 'Palestinian Territory, Occupied', code: 'PS' },\r\n  { name: 'Panama', code: 'PA' },\r\n  { name: 'Papua New Guinea', code: 'PG' },\r\n  { name: 'Paraguay', code: 'PY' },\r\n  { name: 'Peru', code: 'PE' },\r\n  { name: 'Philippines', code: 'PH' },\r\n  { name: 'Pitcairn', code: 'PN' },\r\n  { name: 'Poland', code: 'PL' },\r\n  { name: 'Portugal', code: 'PT' },\r\n  { name: 'Puerto Rico', code: 'PR' },\r\n  { name: 'Qatar', code: 'QA' },\r\n  { name: 'Reunion', code: 'RE' },\r\n  { name: 'Romania', code: 'RO' },\r\n  { name: 'Russian Federation', code: 'RU' },\r\n  { name: 'RWANDA', code: 'RW' },\r\n  { name: 'Saint Helena', code: 'SH' },\r\n  { name: 'Saint Kitts and Nevis', code: 'KN' },\r\n  { name: 'Saint Lucia', code: 'LC' },\r\n  { name: 'Saint Pierre and Miquelon', code: 'PM' },\r\n  { name: 'Saint Vincent and the Grenadines', code: 'VC' },\r\n  { name: 'Samoa', code: 'WS' },\r\n  { name: 'San Marino', code: 'SM' },\r\n  { name: 'Sao Tome and Principe', code: 'ST' },\r\n  { name: 'Saudi Arabia', code: 'SA' },\r\n  { name: 'Senegal', code: 'SN' },\r\n  { name: 'Serbia and Montenegro', code: 'CS' },\r\n  { name: 'Seychelles', code: 'SC' },\r\n  { name: 'Sierra Leone', code: 'SL' },\r\n  { name: 'Singapore', code: 'SG' },\r\n  { name: 'Slovakia', code: 'SK' },\r\n  { name: 'Slovenia', code: 'SI' },\r\n  { name: 'Solomon Islands', code: 'SB' },\r\n  { name: 'Somalia', code: 'SO' },\r\n  { name: 'South Africa', code: 'ZA' },\r\n  { name: 'South Georgia and the South Sandwich Islands', code: 'GS' },\r\n  { name: 'Spain', code: 'ES' },\r\n  { name: 'Sri Lanka', code: 'LK' },\r\n  { name: 'Sudan', code: 'SD' },\r\n  { name: 'Suriname', code: 'SR' },\r\n  { name: 'Svalbard and Jan Mayen', code: 'SJ' },\r\n  { name: 'Swaziland', code: 'SZ' },\r\n  { name: 'Sweden', code: 'SE' },\r\n  { name: 'Switzerland', code: 'CH' },\r\n  { name: 'Syrian Arab Republic', code: 'SY' },\r\n  { name: 'Taiwan, Province of China', code: 'TW' },\r\n  { name: 'Tajikistan', code: 'TJ' },\r\n  { name: 'Tanzania, United Republic of', code: 'TZ' },\r\n  { name: 'Thailand', code: 'TH' },\r\n  { name: 'Timor-Leste', code: 'TL' },\r\n  { name: 'Togo', code: 'TG' },\r\n  { name: 'Tokelau', code: 'TK' },\r\n  { name: 'Tonga', code: 'TO' },\r\n  { name: 'Trinidad and Tobago', code: 'TT' },\r\n  { name: 'Tunisia', code: 'TN' },\r\n  { name: 'Turkey', code: 'TR' },\r\n  { name: 'Turkmenistan', code: 'TM' },\r\n  { name: 'Turks and Caicos Islands', code: 'TC' },\r\n  { name: 'Tuvalu', code: 'TV' },\r\n  { name: 'Uganda', code: 'UG' },\r\n  { name: 'Ukraine', code: 'UA' },\r\n  { name: 'United Arab Emirates', code: 'AE' },\r\n  { name: 'United Kingdom', code: 'GB' },\r\n  { name: 'United States', code: 'US' },\r\n  { name: 'United States Minor Outlying Islands', code: 'UM' },\r\n  { name: 'Uruguay', code: 'UY' },\r\n  { name: 'Uzbekistan', code: 'UZ' },\r\n  { name: 'Vanuatu', code: 'VU' },\r\n  { name: 'Venezuela', code: 'VE' },\r\n  { name: 'Viet Nam', code: 'VN' },\r\n  { name: 'Virgin Islands, British', code: 'VG' },\r\n  { name: 'Virgin Islands, U.S.', code: 'VI' },\r\n  { name: 'Wallis and Futuna', code: 'WF' },\r\n  { name: 'Western Sahara', code: 'EH' },\r\n  { name: 'Yemen', code: 'YE' },\r\n  { name: 'Zambia', code: 'ZM' },\r\n  { name: 'Zimbabwe', code: 'ZW' }\r\n]"
             },
             {
                 "name": "Default",
@@ -1373,7 +1107,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  title: \"Person\",\r\n  type: \"object\",\r\n  required: [\r\n    \"name\",\r\n    \"age\",\r\n    \"date\",\r\n    \"favorite_color\",\r\n    \"gender\",\r\n    \"location\",\r\n    \"pets\",\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: \"string\",\r\n      description: \"First and Last name\",\r\n      minLength: 4,\r\n      default: \"Jeremy Dorn\",\r\n    },\r\n    age: {\r\n      type: \"integer\",\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: \"string\",\r\n      format: \"color\",\r\n      title: \"favorite color\",\r\n      default: \"#ffa500\",\r\n    },\r\n    gender: {\r\n      type: \"string\",\r\n      enum: [\"male\", \"female\", \"other\"],\r\n    },\r\n    date: {\r\n      type: \"string\",\r\n      format: \"date\",\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: \"object\",\r\n      title: \"Location\",\r\n      required: [\"city\", \"state\", \"citystate\"],\r\n      properties: {\r\n        city: {\r\n          type: \"string\",\r\n          default: \"San Francisco\",\r\n        },\r\n        state: {\r\n          type: \"string\",\r\n          default: \"CA\",\r\n        },\r\n        citystate: {\r\n          type: \"string\",\r\n          description:\r\n            \"This is generated automatically from the previous two fields\",\r\n          template: \"{{city}}, {{state}}\",\r\n          watch: {\r\n            city: \"location.city\",\r\n            state: \"location.state\",\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: \"array\",\r\n      format: \"table\",\r\n      title: \"Pets\",\r\n      uniqueItems: true,\r\n      items: {\r\n        type: \"object\",\r\n        title: \"Pet\",\r\n        properties: {\r\n          type: {\r\n            type: \"string\",\r\n            enum: [\"cat\", \"dog\", \"bird\", \"reptile\", \"other\"],\r\n            default: \"dog\",\r\n          },\r\n          name: {\r\n            type: \"string\",\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: \"dog\",\r\n          name: \"Walter\",\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
+                "defaultValue": "{\r\n  title: 'Person',\r\n  type: 'object',\r\n  required: [\r\n    'name',\r\n    'age',\r\n    'date',\r\n    'favorite_color',\r\n    'gender',\r\n    'location',\r\n    'pets',\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: 'string',\r\n      description: 'First and Last name',\r\n      minLength: 4,\r\n      default: 'Jeremy Dorn',\r\n    },\r\n    age: {\r\n      type: 'integer',\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: 'string',\r\n      format: 'color',\r\n      title: 'favorite color',\r\n      default: '#ffa500',\r\n    },\r\n    gender: {\r\n      type: 'string',\r\n      enum: ['male', 'female', 'other'],\r\n    },\r\n    date: {\r\n      type: 'string',\r\n      format: 'date',\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: 'object',\r\n      title: 'Location',\r\n      required: ['city', 'state', 'citystate'],\r\n      properties: {\r\n        city: {\r\n          type: 'string',\r\n          default: 'San Francisco',\r\n        },\r\n        state: {\r\n          type: 'string',\r\n          default: 'CA',\r\n        },\r\n        citystate: {\r\n          type: 'string',\r\n          description:\r\n            'This is generated automatically from the previous two fields',\r\n          template: '{{city}}, {{state}}',\r\n          watch: {\r\n            city: 'location.city',\r\n            state: 'location.state',\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: 'array',\r\n      format: 'table',\r\n      title: 'Pets',\r\n      uniqueItems: true,\r\n      items: {\r\n        type: 'object',\r\n        title: 'Pet',\r\n        properties: {\r\n          type: {\r\n            type: 'string',\r\n            enum: ['cat', 'dog', 'bird', 'reptile', 'other'],\r\n            default: 'dog',\r\n          },\r\n          name: {\r\n            type: 'string',\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: 'dog',\r\n          name: 'Walter',\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
             },
             {
                 "name": "Disabled",
@@ -1426,123 +1160,14 @@
                 "defaultValue": "TemplateCtrl.bind({})"
             },
             {
-                "name": "Large",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
+                "file": "src/stories/JSONForm/JSONForm.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "require",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "literal type"
-            },
-            {
-                "name": "Secondary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Small",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\r\n  props: args,\r\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Header>",
-                "defaultValue": "(args: Header) => ({\r\n  props: args,\r\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Page>",
-                "defaultValue": "(args: Page) => ({\r\n  props: args,\r\n})"
             },
             {
                 "name": "Template",
@@ -1561,8 +1186,8 @@
                 "file": "src/stories/JSONForm/JSONForm.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<JSONForm>",
-                "defaultValue": "(args: JSONForm) => ({\r\n  props: args,\r\n})"
+                "type": "StoryFn<JSONForm>",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
             },
             {
                 "name": "TemplateCtrl",
@@ -1618,7 +1243,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\r\n  {name: 'Afghanistan', code: 'AF'},\r\n  {name: 'Åland Islands', code: 'AX'},\r\n  {name: 'Albania', code: 'AL'},\r\n  {name: 'Algeria', code: 'DZ'},\r\n  {name: 'American Samoa', code: 'AS'},\r\n  {name: 'AndorrA', code: 'AD'},\r\n  {name: 'Angola', code: 'AO'},\r\n  {name: 'Anguilla', code: 'AI'},\r\n  {name: 'Antarctica', code: 'AQ'},\r\n  {name: 'Antigua and Barbuda', code: 'AG'},\r\n  {name: 'Argentina', code: 'AR'},\r\n  {name: 'Armenia', code: 'AM'},\r\n  {name: 'Aruba', code: 'AW'},\r\n  {name: 'Australia', code: 'AU'},\r\n  {name: 'Austria', code: 'AT'},\r\n  {name: 'Azerbaijan', code: 'AZ'},\r\n  {name: 'Bahamas', code: 'BS'},\r\n  {name: 'Bahrain', code: 'BH'},\r\n  {name: 'Bangladesh', code: 'BD'},\r\n  {name: 'Barbados', code: 'BB'},\r\n  {name: 'Belarus', code: 'BY'},\r\n  {name: 'Belgium', code: 'BE'},\r\n  {name: 'Belize', code: 'BZ'},\r\n  {name: 'Benin', code: 'BJ'},\r\n  {name: 'Bermuda', code: 'BM'},\r\n  {name: 'Bhutan', code: 'BT'},\r\n  {name: 'Bolivia', code: 'BO'},\r\n  {name: 'Bosnia and Herzegovina', code: 'BA'},\r\n  {name: 'Botswana', code: 'BW'},\r\n  {name: 'Bouvet Island', code: 'BV'},\r\n  {name: 'Brazil', code: 'BR'},\r\n  {name: 'British Indian Ocean Territory', code: 'IO'},\r\n  {name: 'Brunei Darussalam', code: 'BN'},\r\n  {name: 'Bulgaria', code: 'BG'},\r\n  {name: 'Burkina Faso', code: 'BF'},\r\n  {name: 'Burundi', code: 'BI'},\r\n  {name: 'Cambodia', code: 'KH'},\r\n  {name: 'Cameroon', code: 'CM'},\r\n  {name: 'Canada', code: 'CA'},\r\n  {name: 'Cape Verde', code: 'CV'},\r\n  {name: 'Cayman Islands', code: 'KY'},\r\n  {name: 'Central African Republic', code: 'CF'},\r\n  {name: 'Chad', code: 'TD'},\r\n  {name: 'Chile', code: 'CL'},\r\n  {name: 'China', code: 'CN'},\r\n  {name: 'Christmas Island', code: 'CX'},\r\n  {name: 'Cocos (Keeling) Islands', code: 'CC'},\r\n  {name: 'Colombia', code: 'CO'},\r\n  {name: 'Comoros', code: 'KM'},\r\n  {name: 'Congo', code: 'CG'},\r\n  {name: 'Congo, The Democratic Republic of the', code: 'CD'},\r\n  {name: 'Cook Islands', code: 'CK'},\r\n  {name: 'Costa Rica', code: 'CR'},\r\n  {name: 'Cote D\\'Ivoire', code: 'CI'},\r\n  {name: 'Croatia', code: 'HR'},\r\n  {name: 'Cuba', code: 'CU'},\r\n  {name: 'Cyprus', code: 'CY'},\r\n  {name: 'Czech Republic', code: 'CZ'},\r\n  {name: 'Denmark', code: 'DK'},\r\n  {name: 'Djibouti', code: 'DJ'},\r\n  {name: 'Dominica', code: 'DM'},\r\n  {name: 'Dominican Republic', code: 'DO'},\r\n  {name: 'Ecuador', code: 'EC'},\r\n  {name: 'Egypt', code: 'EG'},\r\n  {name: 'El Salvador', code: 'SV'},\r\n  {name: 'Equatorial Guinea', code: 'GQ'},\r\n  {name: 'Eritrea', code: 'ER'},\r\n  {name: 'Estonia', code: 'EE'},\r\n  {name: 'Ethiopia', code: 'ET'},\r\n  {name: 'Falkland Islands (Malvinas)', code: 'FK'},\r\n  {name: 'Faroe Islands', code: 'FO'},\r\n  {name: 'Fiji', code: 'FJ'},\r\n  {name: 'Finland', code: 'FI'},\r\n  {name: 'France', code: 'FR'},\r\n  {name: 'French Guiana', code: 'GF'},\r\n  {name: 'French Polynesia', code: 'PF'},\r\n  {name: 'French Southern Territories', code: 'TF'},\r\n  {name: 'Gabon', code: 'GA'},\r\n  {name: 'Gambia', code: 'GM'},\r\n  {name: 'Georgia', code: 'GE'},\r\n  {name: 'Germany', code: 'DE'},\r\n  {name: 'Ghana', code: 'GH'},\r\n  {name: 'Gibraltar', code: 'GI'},\r\n  {name: 'Greece', code: 'GR'},\r\n  {name: 'Greenland', code: 'GL'},\r\n  {name: 'Grenada', code: 'GD'},\r\n  {name: 'Guadeloupe', code: 'GP'},\r\n  {name: 'Guam', code: 'GU'},\r\n  {name: 'Guatemala', code: 'GT'},\r\n  {name: 'Guernsey', code: 'GG'},\r\n  {name: 'Guinea', code: 'GN'},\r\n  {name: 'Guinea-Bissau', code: 'GW'},\r\n  {name: 'Guyana', code: 'GY'},\r\n  {name: 'Haiti', code: 'HT'},\r\n  {name: 'Heard Island and Mcdonald Islands', code: 'HM'},\r\n  {name: 'Holy See (Vatican City State)', code: 'VA'},\r\n  {name: 'Honduras', code: 'HN'},\r\n  {name: 'Hong Kong', code: 'HK'},\r\n  {name: 'Hungary', code: 'HU'},\r\n  {name: 'Iceland', code: 'IS'},\r\n  {name: 'India', code: 'IN'},\r\n  {name: 'Indonesia', code: 'ID'},\r\n  {name: 'Iran, Islamic Republic Of', code: 'IR'},\r\n  {name: 'Iraq', code: 'IQ'},\r\n  {name: 'Ireland', code: 'IE'},\r\n  {name: 'Isle of Man', code: 'IM'},\r\n  {name: 'Israel', code: 'IL'},\r\n  {name: 'Italy', code: 'IT'},\r\n  {name: 'Jamaica', code: 'JM'},\r\n  {name: 'Japan', code: 'JP'},\r\n  {name: 'Jersey', code: 'JE'},\r\n  {name: 'Jordan', code: 'JO'},\r\n  {name: 'Kazakhstan', code: 'KZ'},\r\n  {name: 'Kenya', code: 'KE'},\r\n  {name: 'Kiribati', code: 'KI'},\r\n  {name: 'Korea, Democratic People\\'S Republic of', code: 'KP'},\r\n  {name: 'Korea, Republic of', code: 'KR'},\r\n  {name: 'Kuwait', code: 'KW'},\r\n  {name: 'Kyrgyzstan', code: 'KG'},\r\n  {name: 'Lao People\\'S Democratic Republic', code: 'LA'},\r\n  {name: 'Latvia', code: 'LV'},\r\n  {name: 'Lebanon', code: 'LB'},\r\n  {name: 'Lesotho', code: 'LS'},\r\n  {name: 'Liberia', code: 'LR'},\r\n  {name: 'Libyan Arab Jamahiriya', code: 'LY'},\r\n  {name: 'Liechtenstein', code: 'LI'},\r\n  {name: 'Lithuania', code: 'LT'},\r\n  {name: 'Luxembourg', code: 'LU'},\r\n  {name: 'Macao', code: 'MO'},\r\n  {name: 'Macedonia, The Former Yugoslav Republic of', code: 'MK'},\r\n  {name: 'Madagascar', code: 'MG'},\r\n  {name: 'Malawi', code: 'MW'},\r\n  {name: 'Malaysia', code: 'MY'},\r\n  {name: 'Maldives', code: 'MV'},\r\n  {name: 'Mali', code: 'ML'},\r\n  {name: 'Malta', code: 'MT'},\r\n  {name: 'Marshall Islands', code: 'MH'},\r\n  {name: 'Martinique', code: 'MQ'},\r\n  {name: 'Mauritania', code: 'MR'},\r\n  {name: 'Mauritius', code: 'MU'},\r\n  {name: 'Mayotte', code: 'YT'},\r\n  {name: 'Mexico', code: 'MX'},\r\n  {name: 'Micronesia, Federated States of', code: 'FM'},\r\n  {name: 'Moldova, Republic of', code: 'MD'},\r\n  {name: 'Monaco', code: 'MC'},\r\n  {name: 'Mongolia', code: 'MN'},\r\n  {name: 'Montserrat', code: 'MS'},\r\n  {name: 'Morocco', code: 'MA'},\r\n  {name: 'Mozambique', code: 'MZ'},\r\n  {name: 'Myanmar', code: 'MM'},\r\n  {name: 'Namibia', code: 'NA'},\r\n  {name: 'Nauru', code: 'NR'},\r\n  {name: 'Nepal', code: 'NP'},\r\n  {name: 'Netherlands', code: 'NL'},\r\n  {name: 'Netherlands Antilles', code: 'AN'},\r\n  {name: 'New Caledonia', code: 'NC'},\r\n  {name: 'New Zealand', code: 'NZ'},\r\n  {name: 'Nicaragua', code: 'NI'},\r\n  {name: 'Niger', code: 'NE'},\r\n  {name: 'Nigeria', code: 'NG'},\r\n  {name: 'Niue', code: 'NU'},\r\n  {name: 'Norfolk Island', code: 'NF'},\r\n  {name: 'Northern Mariana Islands', code: 'MP'},\r\n  {name: 'Norway', code: 'NO'},\r\n  {name: 'Oman', code: 'OM'},\r\n  {name: 'Pakistan', code: 'PK'},\r\n  {name: 'Palau', code: 'PW'},\r\n  {name: 'Palestinian Territory, Occupied', code: 'PS'},\r\n  {name: 'Panama', code: 'PA'},\r\n  {name: 'Papua New Guinea', code: 'PG'},\r\n  {name: 'Paraguay', code: 'PY'},\r\n  {name: 'Peru', code: 'PE'},\r\n  {name: 'Philippines', code: 'PH'},\r\n  {name: 'Pitcairn', code: 'PN'},\r\n  {name: 'Poland', code: 'PL'},\r\n  {name: 'Portugal', code: 'PT'},\r\n  {name: 'Puerto Rico', code: 'PR'},\r\n  {name: 'Qatar', code: 'QA'},\r\n  {name: 'Reunion', code: 'RE'},\r\n  {name: 'Romania', code: 'RO'},\r\n  {name: 'Russian Federation', code: 'RU'},\r\n  {name: 'RWANDA', code: 'RW'},\r\n  {name: 'Saint Helena', code: 'SH'},\r\n  {name: 'Saint Kitts and Nevis', code: 'KN'},\r\n  {name: 'Saint Lucia', code: 'LC'},\r\n  {name: 'Saint Pierre and Miquelon', code: 'PM'},\r\n  {name: 'Saint Vincent and the Grenadines', code: 'VC'},\r\n  {name: 'Samoa', code: 'WS'},\r\n  {name: 'San Marino', code: 'SM'},\r\n  {name: 'Sao Tome and Principe', code: 'ST'},\r\n  {name: 'Saudi Arabia', code: 'SA'},\r\n  {name: 'Senegal', code: 'SN'},\r\n  {name: 'Serbia and Montenegro', code: 'CS'},\r\n  {name: 'Seychelles', code: 'SC'},\r\n  {name: 'Sierra Leone', code: 'SL'},\r\n  {name: 'Singapore', code: 'SG'},\r\n  {name: 'Slovakia', code: 'SK'},\r\n  {name: 'Slovenia', code: 'SI'},\r\n  {name: 'Solomon Islands', code: 'SB'},\r\n  {name: 'Somalia', code: 'SO'},\r\n  {name: 'South Africa', code: 'ZA'},\r\n  {name: 'South Georgia and the South Sandwich Islands', code: 'GS'},\r\n  {name: 'Spain', code: 'ES'},\r\n  {name: 'Sri Lanka', code: 'LK'},\r\n  {name: 'Sudan', code: 'SD'},\r\n  {name: 'Suriname', code: 'SR'},\r\n  {name: 'Svalbard and Jan Mayen', code: 'SJ'},\r\n  {name: 'Swaziland', code: 'SZ'},\r\n  {name: 'Sweden', code: 'SE'},\r\n  {name: 'Switzerland', code: 'CH'},\r\n  {name: 'Syrian Arab Republic', code: 'SY'},\r\n  {name: 'Taiwan, Province of China', code: 'TW'},\r\n  {name: 'Tajikistan', code: 'TJ'},\r\n  {name: 'Tanzania, United Republic of', code: 'TZ'},\r\n  {name: 'Thailand', code: 'TH'},\r\n  {name: 'Timor-Leste', code: 'TL'},\r\n  {name: 'Togo', code: 'TG'},\r\n  {name: 'Tokelau', code: 'TK'},\r\n  {name: 'Tonga', code: 'TO'},\r\n  {name: 'Trinidad and Tobago', code: 'TT'},\r\n  {name: 'Tunisia', code: 'TN'},\r\n  {name: 'Turkey', code: 'TR'},\r\n  {name: 'Turkmenistan', code: 'TM'},\r\n  {name: 'Turks and Caicos Islands', code: 'TC'},\r\n  {name: 'Tuvalu', code: 'TV'},\r\n  {name: 'Uganda', code: 'UG'},\r\n  {name: 'Ukraine', code: 'UA'},\r\n  {name: 'United Arab Emirates', code: 'AE'},\r\n  {name: 'United Kingdom', code: 'GB'},\r\n  {name: 'United States', code: 'US'},\r\n  {name: 'United States Minor Outlying Islands', code: 'UM'},\r\n  {name: 'Uruguay', code: 'UY'},\r\n  {name: 'Uzbekistan', code: 'UZ'},\r\n  {name: 'Vanuatu', code: 'VU'},\r\n  {name: 'Venezuela', code: 'VE'},\r\n  {name: 'Viet Nam', code: 'VN'},\r\n  {name: 'Virgin Islands, British', code: 'VG'},\r\n  {name: 'Virgin Islands, U.S.', code: 'VI'},\r\n  {name: 'Wallis and Futuna', code: 'WF'},\r\n  {name: 'Western Sahara', code: 'EH'},\r\n  {name: 'Yemen', code: 'YE'},\r\n  {name: 'Zambia', code: 'ZM'},\r\n  {name: 'Zimbabwe', code: 'ZW'}\r\n]"
+                    "defaultValue": "[\r\n  { name: 'Afghanistan', code: 'AF' },\r\n  { name: 'Åland Islands', code: 'AX' },\r\n  { name: 'Albania', code: 'AL' },\r\n  { name: 'Algeria', code: 'DZ' },\r\n  { name: 'American Samoa', code: 'AS' },\r\n  { name: 'AndorrA', code: 'AD' },\r\n  { name: 'Angola', code: 'AO' },\r\n  { name: 'Anguilla', code: 'AI' },\r\n  { name: 'Antarctica', code: 'AQ' },\r\n  { name: 'Antigua and Barbuda', code: 'AG' },\r\n  { name: 'Argentina', code: 'AR' },\r\n  { name: 'Armenia', code: 'AM' },\r\n  { name: 'Aruba', code: 'AW' },\r\n  { name: 'Australia', code: 'AU' },\r\n  { name: 'Austria', code: 'AT' },\r\n  { name: 'Azerbaijan', code: 'AZ' },\r\n  { name: 'Bahamas', code: 'BS' },\r\n  { name: 'Bahrain', code: 'BH' },\r\n  { name: 'Bangladesh', code: 'BD' },\r\n  { name: 'Barbados', code: 'BB' },\r\n  { name: 'Belarus', code: 'BY' },\r\n  { name: 'Belgium', code: 'BE' },\r\n  { name: 'Belize', code: 'BZ' },\r\n  { name: 'Benin', code: 'BJ' },\r\n  { name: 'Bermuda', code: 'BM' },\r\n  { name: 'Bhutan', code: 'BT' },\r\n  { name: 'Bolivia', code: 'BO' },\r\n  { name: 'Bosnia and Herzegovina', code: 'BA' },\r\n  { name: 'Botswana', code: 'BW' },\r\n  { name: 'Bouvet Island', code: 'BV' },\r\n  { name: 'Brazil', code: 'BR' },\r\n  { name: 'British Indian Ocean Territory', code: 'IO' },\r\n  { name: 'Brunei Darussalam', code: 'BN' },\r\n  { name: 'Bulgaria', code: 'BG' },\r\n  { name: 'Burkina Faso', code: 'BF' },\r\n  { name: 'Burundi', code: 'BI' },\r\n  { name: 'Cambodia', code: 'KH' },\r\n  { name: 'Cameroon', code: 'CM' },\r\n  { name: 'Canada', code: 'CA' },\r\n  { name: 'Cape Verde', code: 'CV' },\r\n  { name: 'Cayman Islands', code: 'KY' },\r\n  { name: 'Central African Republic', code: 'CF' },\r\n  { name: 'Chad', code: 'TD' },\r\n  { name: 'Chile', code: 'CL' },\r\n  { name: 'China', code: 'CN' },\r\n  { name: 'Christmas Island', code: 'CX' },\r\n  { name: 'Cocos (Keeling) Islands', code: 'CC' },\r\n  { name: 'Colombia', code: 'CO' },\r\n  { name: 'Comoros', code: 'KM' },\r\n  { name: 'Congo', code: 'CG' },\r\n  { name: 'Congo, The Democratic Republic of the', code: 'CD' },\r\n  { name: 'Cook Islands', code: 'CK' },\r\n  { name: 'Costa Rica', code: 'CR' },\r\n  { name: 'Cote D\\'Ivoire', code: 'CI' },\r\n  { name: 'Croatia', code: 'HR' },\r\n  { name: 'Cuba', code: 'CU' },\r\n  { name: 'Cyprus', code: 'CY' },\r\n  { name: 'Czech Republic', code: 'CZ' },\r\n  { name: 'Denmark', code: 'DK' },\r\n  { name: 'Djibouti', code: 'DJ' },\r\n  { name: 'Dominica', code: 'DM' },\r\n  { name: 'Dominican Republic', code: 'DO' },\r\n  { name: 'Ecuador', code: 'EC' },\r\n  { name: 'Egypt', code: 'EG' },\r\n  { name: 'El Salvador', code: 'SV' },\r\n  { name: 'Equatorial Guinea', code: 'GQ' },\r\n  { name: 'Eritrea', code: 'ER' },\r\n  { name: 'Estonia', code: 'EE' },\r\n  { name: 'Ethiopia', code: 'ET' },\r\n  { name: 'Falkland Islands (Malvinas)', code: 'FK' },\r\n  { name: 'Faroe Islands', code: 'FO' },\r\n  { name: 'Fiji', code: 'FJ' },\r\n  { name: 'Finland', code: 'FI' },\r\n  { name: 'France', code: 'FR' },\r\n  { name: 'French Guiana', code: 'GF' },\r\n  { name: 'French Polynesia', code: 'PF' },\r\n  { name: 'French Southern Territories', code: 'TF' },\r\n  { name: 'Gabon', code: 'GA' },\r\n  { name: 'Gambia', code: 'GM' },\r\n  { name: 'Georgia', code: 'GE' },\r\n  { name: 'Germany', code: 'DE' },\r\n  { name: 'Ghana', code: 'GH' },\r\n  { name: 'Gibraltar', code: 'GI' },\r\n  { name: 'Greece', code: 'GR' },\r\n  { name: 'Greenland', code: 'GL' },\r\n  { name: 'Grenada', code: 'GD' },\r\n  { name: 'Guadeloupe', code: 'GP' },\r\n  { name: 'Guam', code: 'GU' },\r\n  { name: 'Guatemala', code: 'GT' },\r\n  { name: 'Guernsey', code: 'GG' },\r\n  { name: 'Guinea', code: 'GN' },\r\n  { name: 'Guinea-Bissau', code: 'GW' },\r\n  { name: 'Guyana', code: 'GY' },\r\n  { name: 'Haiti', code: 'HT' },\r\n  { name: 'Heard Island and Mcdonald Islands', code: 'HM' },\r\n  { name: 'Holy See (Vatican City State)', code: 'VA' },\r\n  { name: 'Honduras', code: 'HN' },\r\n  { name: 'Hong Kong', code: 'HK' },\r\n  { name: 'Hungary', code: 'HU' },\r\n  { name: 'Iceland', code: 'IS' },\r\n  { name: 'India', code: 'IN' },\r\n  { name: 'Indonesia', code: 'ID' },\r\n  { name: 'Iran, Islamic Republic Of', code: 'IR' },\r\n  { name: 'Iraq', code: 'IQ' },\r\n  { name: 'Ireland', code: 'IE' },\r\n  { name: 'Isle of Man', code: 'IM' },\r\n  { name: 'Israel', code: 'IL' },\r\n  { name: 'Italy', code: 'IT' },\r\n  { name: 'Jamaica', code: 'JM' },\r\n  { name: 'Japan', code: 'JP' },\r\n  { name: 'Jersey', code: 'JE' },\r\n  { name: 'Jordan', code: 'JO' },\r\n  { name: 'Kazakhstan', code: 'KZ' },\r\n  { name: 'Kenya', code: 'KE' },\r\n  { name: 'Kiribati', code: 'KI' },\r\n  { name: 'Korea, Democratic People\\'S Republic of', code: 'KP' },\r\n  { name: 'Korea, Republic of', code: 'KR' },\r\n  { name: 'Kuwait', code: 'KW' },\r\n  { name: 'Kyrgyzstan', code: 'KG' },\r\n  { name: 'Lao People\\'S Democratic Republic', code: 'LA' },\r\n  { name: 'Latvia', code: 'LV' },\r\n  { name: 'Lebanon', code: 'LB' },\r\n  { name: 'Lesotho', code: 'LS' },\r\n  { name: 'Liberia', code: 'LR' },\r\n  { name: 'Libyan Arab Jamahiriya', code: 'LY' },\r\n  { name: 'Liechtenstein', code: 'LI' },\r\n  { name: 'Lithuania', code: 'LT' },\r\n  { name: 'Luxembourg', code: 'LU' },\r\n  { name: 'Macao', code: 'MO' },\r\n  { name: 'Macedonia, The Former Yugoslav Republic of', code: 'MK' },\r\n  { name: 'Madagascar', code: 'MG' },\r\n  { name: 'Malawi', code: 'MW' },\r\n  { name: 'Malaysia', code: 'MY' },\r\n  { name: 'Maldives', code: 'MV' },\r\n  { name: 'Mali', code: 'ML' },\r\n  { name: 'Malta', code: 'MT' },\r\n  { name: 'Marshall Islands', code: 'MH' },\r\n  { name: 'Martinique', code: 'MQ' },\r\n  { name: 'Mauritania', code: 'MR' },\r\n  { name: 'Mauritius', code: 'MU' },\r\n  { name: 'Mayotte', code: 'YT' },\r\n  { name: 'Mexico', code: 'MX' },\r\n  { name: 'Micronesia, Federated States of', code: 'FM' },\r\n  { name: 'Moldova, Republic of', code: 'MD' },\r\n  { name: 'Monaco', code: 'MC' },\r\n  { name: 'Mongolia', code: 'MN' },\r\n  { name: 'Montserrat', code: 'MS' },\r\n  { name: 'Morocco', code: 'MA' },\r\n  { name: 'Mozambique', code: 'MZ' },\r\n  { name: 'Myanmar', code: 'MM' },\r\n  { name: 'Namibia', code: 'NA' },\r\n  { name: 'Nauru', code: 'NR' },\r\n  { name: 'Nepal', code: 'NP' },\r\n  { name: 'Netherlands', code: 'NL' },\r\n  { name: 'Netherlands Antilles', code: 'AN' },\r\n  { name: 'New Caledonia', code: 'NC' },\r\n  { name: 'New Zealand', code: 'NZ' },\r\n  { name: 'Nicaragua', code: 'NI' },\r\n  { name: 'Niger', code: 'NE' },\r\n  { name: 'Nigeria', code: 'NG' },\r\n  { name: 'Niue', code: 'NU' },\r\n  { name: 'Norfolk Island', code: 'NF' },\r\n  { name: 'Northern Mariana Islands', code: 'MP' },\r\n  { name: 'Norway', code: 'NO' },\r\n  { name: 'Oman', code: 'OM' },\r\n  { name: 'Pakistan', code: 'PK' },\r\n  { name: 'Palau', code: 'PW' },\r\n  { name: 'Palestinian Territory, Occupied', code: 'PS' },\r\n  { name: 'Panama', code: 'PA' },\r\n  { name: 'Papua New Guinea', code: 'PG' },\r\n  { name: 'Paraguay', code: 'PY' },\r\n  { name: 'Peru', code: 'PE' },\r\n  { name: 'Philippines', code: 'PH' },\r\n  { name: 'Pitcairn', code: 'PN' },\r\n  { name: 'Poland', code: 'PL' },\r\n  { name: 'Portugal', code: 'PT' },\r\n  { name: 'Puerto Rico', code: 'PR' },\r\n  { name: 'Qatar', code: 'QA' },\r\n  { name: 'Reunion', code: 'RE' },\r\n  { name: 'Romania', code: 'RO' },\r\n  { name: 'Russian Federation', code: 'RU' },\r\n  { name: 'RWANDA', code: 'RW' },\r\n  { name: 'Saint Helena', code: 'SH' },\r\n  { name: 'Saint Kitts and Nevis', code: 'KN' },\r\n  { name: 'Saint Lucia', code: 'LC' },\r\n  { name: 'Saint Pierre and Miquelon', code: 'PM' },\r\n  { name: 'Saint Vincent and the Grenadines', code: 'VC' },\r\n  { name: 'Samoa', code: 'WS' },\r\n  { name: 'San Marino', code: 'SM' },\r\n  { name: 'Sao Tome and Principe', code: 'ST' },\r\n  { name: 'Saudi Arabia', code: 'SA' },\r\n  { name: 'Senegal', code: 'SN' },\r\n  { name: 'Serbia and Montenegro', code: 'CS' },\r\n  { name: 'Seychelles', code: 'SC' },\r\n  { name: 'Sierra Leone', code: 'SL' },\r\n  { name: 'Singapore', code: 'SG' },\r\n  { name: 'Slovakia', code: 'SK' },\r\n  { name: 'Slovenia', code: 'SI' },\r\n  { name: 'Solomon Islands', code: 'SB' },\r\n  { name: 'Somalia', code: 'SO' },\r\n  { name: 'South Africa', code: 'ZA' },\r\n  { name: 'South Georgia and the South Sandwich Islands', code: 'GS' },\r\n  { name: 'Spain', code: 'ES' },\r\n  { name: 'Sri Lanka', code: 'LK' },\r\n  { name: 'Sudan', code: 'SD' },\r\n  { name: 'Suriname', code: 'SR' },\r\n  { name: 'Svalbard and Jan Mayen', code: 'SJ' },\r\n  { name: 'Swaziland', code: 'SZ' },\r\n  { name: 'Sweden', code: 'SE' },\r\n  { name: 'Switzerland', code: 'CH' },\r\n  { name: 'Syrian Arab Republic', code: 'SY' },\r\n  { name: 'Taiwan, Province of China', code: 'TW' },\r\n  { name: 'Tajikistan', code: 'TJ' },\r\n  { name: 'Tanzania, United Republic of', code: 'TZ' },\r\n  { name: 'Thailand', code: 'TH' },\r\n  { name: 'Timor-Leste', code: 'TL' },\r\n  { name: 'Togo', code: 'TG' },\r\n  { name: 'Tokelau', code: 'TK' },\r\n  { name: 'Tonga', code: 'TO' },\r\n  { name: 'Trinidad and Tobago', code: 'TT' },\r\n  { name: 'Tunisia', code: 'TN' },\r\n  { name: 'Turkey', code: 'TR' },\r\n  { name: 'Turkmenistan', code: 'TM' },\r\n  { name: 'Turks and Caicos Islands', code: 'TC' },\r\n  { name: 'Tuvalu', code: 'TV' },\r\n  { name: 'Uganda', code: 'UG' },\r\n  { name: 'Ukraine', code: 'UA' },\r\n  { name: 'United Arab Emirates', code: 'AE' },\r\n  { name: 'United Kingdom', code: 'GB' },\r\n  { name: 'United States', code: 'US' },\r\n  { name: 'United States Minor Outlying Islands', code: 'UM' },\r\n  { name: 'Uruguay', code: 'UY' },\r\n  { name: 'Uzbekistan', code: 'UZ' },\r\n  { name: 'Vanuatu', code: 'VU' },\r\n  { name: 'Venezuela', code: 'VE' },\r\n  { name: 'Viet Nam', code: 'VN' },\r\n  { name: 'Virgin Islands, British', code: 'VG' },\r\n  { name: 'Virgin Islands, U.S.', code: 'VI' },\r\n  { name: 'Wallis and Futuna', code: 'WF' },\r\n  { name: 'Western Sahara', code: 'EH' },\r\n  { name: 'Yemen', code: 'YE' },\r\n  { name: 'Zambia', code: 'ZM' },\r\n  { name: 'Zimbabwe', code: 'ZW' }\r\n]"
                 },
                 {
                     "name": "Default",
@@ -1680,7 +1305,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  onChange: action('onChange'),\r\n\r\n}"
+                    "defaultValue": "{\r\n  onChange: action('onChange'),\r\n}"
                 },
                 {
                     "name": "Basic",
@@ -1700,7 +1325,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  title: \"Person\",\r\n  type: \"object\",\r\n  required: [\r\n    \"name\",\r\n    \"age\",\r\n    \"date\",\r\n    \"favorite_color\",\r\n    \"gender\",\r\n    \"location\",\r\n    \"pets\",\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: \"string\",\r\n      description: \"First and Last name\",\r\n      minLength: 4,\r\n      default: \"Jeremy Dorn\",\r\n    },\r\n    age: {\r\n      type: \"integer\",\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: \"string\",\r\n      format: \"color\",\r\n      title: \"favorite color\",\r\n      default: \"#ffa500\",\r\n    },\r\n    gender: {\r\n      type: \"string\",\r\n      enum: [\"male\", \"female\", \"other\"],\r\n    },\r\n    date: {\r\n      type: \"string\",\r\n      format: \"date\",\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: \"object\",\r\n      title: \"Location\",\r\n      required: [\"city\", \"state\", \"citystate\"],\r\n      properties: {\r\n        city: {\r\n          type: \"string\",\r\n          default: \"San Francisco\",\r\n        },\r\n        state: {\r\n          type: \"string\",\r\n          default: \"CA\",\r\n        },\r\n        citystate: {\r\n          type: \"string\",\r\n          description:\r\n            \"This is generated automatically from the previous two fields\",\r\n          template: \"{{city}}, {{state}}\",\r\n          watch: {\r\n            city: \"location.city\",\r\n            state: \"location.state\",\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: \"array\",\r\n      format: \"table\",\r\n      title: \"Pets\",\r\n      uniqueItems: true,\r\n      items: {\r\n        type: \"object\",\r\n        title: \"Pet\",\r\n        properties: {\r\n          type: {\r\n            type: \"string\",\r\n            enum: [\"cat\", \"dog\", \"bird\", \"reptile\", \"other\"],\r\n            default: \"dog\",\r\n          },\r\n          name: {\r\n            type: \"string\",\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: \"dog\",\r\n          name: \"Walter\",\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
+                    "defaultValue": "{\r\n  title: 'Person',\r\n  type: 'object',\r\n  required: [\r\n    'name',\r\n    'age',\r\n    'date',\r\n    'favorite_color',\r\n    'gender',\r\n    'location',\r\n    'pets',\r\n  ],\r\n  properties: {\r\n    name: {\r\n      type: 'string',\r\n      description: 'First and Last name',\r\n      minLength: 4,\r\n      default: 'Jeremy Dorn',\r\n    },\r\n    age: {\r\n      type: 'integer',\r\n      default: 25,\r\n      minimum: 18,\r\n      maximum: 99,\r\n    },\r\n    favorite_color: {\r\n      type: 'string',\r\n      format: 'color',\r\n      title: 'favorite color',\r\n      default: '#ffa500',\r\n    },\r\n    gender: {\r\n      type: 'string',\r\n      enum: ['male', 'female', 'other'],\r\n    },\r\n    date: {\r\n      type: 'string',\r\n      format: 'date',\r\n      options: {\r\n        flatpickr: {},\r\n      },\r\n    },\r\n    location: {\r\n      type: 'object',\r\n      title: 'Location',\r\n      required: ['city', 'state', 'citystate'],\r\n      properties: {\r\n        city: {\r\n          type: 'string',\r\n          default: 'San Francisco',\r\n        },\r\n        state: {\r\n          type: 'string',\r\n          default: 'CA',\r\n        },\r\n        citystate: {\r\n          type: 'string',\r\n          description:\r\n            'This is generated automatically from the previous two fields',\r\n          template: '{{city}}, {{state}}',\r\n          watch: {\r\n            city: 'location.city',\r\n            state: 'location.state',\r\n          },\r\n        },\r\n      },\r\n    },\r\n    pets: {\r\n      type: 'array',\r\n      format: 'table',\r\n      title: 'Pets',\r\n      uniqueItems: true,\r\n      items: {\r\n        type: 'object',\r\n        title: 'Pet',\r\n        properties: {\r\n          type: {\r\n            type: 'string',\r\n            enum: ['cat', 'dog', 'bird', 'reptile', 'other'],\r\n            default: 'dog',\r\n          },\r\n          name: {\r\n            type: 'string',\r\n          },\r\n        },\r\n      },\r\n      default: [\r\n        {\r\n          type: 'dog',\r\n          name: 'Walter',\r\n        },\r\n      ],\r\n    },\r\n  },\r\n}"
                 },
                 {
                     "name": "Disabled",
@@ -1723,35 +1348,24 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/JSONForm/JSONForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/JSONForm/JSONForm.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<JSONForm>",
-                    "defaultValue": "(args: JSONForm) => ({\r\n  props: args,\r\n})"
-                }
-            ],
-            "src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
+                    "type": "StoryFn<JSONForm>",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -1777,122 +1391,6 @@
                     "type": "object",
                     "defaultValue": "{\r\n  production: false\r\n}"
                 }
-            ],
-            "src/stories/Button.stories.ts": [
-                {
-                    "name": "Large",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Secondary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Small",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Button>",
-                    "defaultValue": "(args: Button) => ({\r\n  props: args,\r\n})"
-                }
-            ],
-            "src/stories/Header.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Header>",
-                    "defaultValue": "(args: Header) => ({\r\n  props: args,\r\n})"
-                }
-            ],
-            "src/stories/Page.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Page>",
-                    "defaultValue": "(args: Page) => ({\r\n  props: args,\r\n})"
-                }
             ]
         },
         "groupedFunctions": {},
@@ -1901,7 +1399,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 3,
+        "count": 2,
         "status": "low",
         "files": [
             {
@@ -2023,86 +1521,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Large",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Primary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Secondary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Small",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedIn",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "src/stories/JSONForm/JSONForm.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -2175,33 +1593,13 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Template",
+                "name": "Primary",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedIn",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
+                "filePath": "src/stories/JSONForm/JSONForm.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -2220,15 +1618,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/button.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ButtonComponent",
-                "coveragePercent": 83,
-                "coverageCount": "5/6",
-                "status": "very-good"
-            },
-            {
                 "filePath": "src/stories/docUtils.ts",
                 "type": "class",
                 "linktype": "classe",
@@ -2236,44 +1625,6 @@
                 "coveragePercent": 50,
                 "coverageCount": "2/4",
                 "status": "medium"
-            },
-            {
-                "filePath": "src/stories/header.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "HeaderComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/page.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "PageComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "context",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "require",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
             }
         ]
     }
